@@ -1,22 +1,39 @@
 import { connect } from 'react-redux';
-import Landing from '../Landing/Landing';
-import Auth from '../Auth/Auth';
 import styles from './styles';
+import BrorNavigator from '../BrorNavigator/BrorNavigator';
+import { loadExercisesByUser } from '../../reducers/exercises';
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
+import { FBLoginManager } from 'NativeModules';
 
 import React, {
-  AppRegistry,
   Component,
-  StyleSheet,
-  Text,
-  View
+  View,
+  StatusBar
 } from 'react-native';
 
 class App extends Component {
+  componentDidMount() {
+    const { dispatch, user } = this.props;
+    if(user.isLoggedIn) {
+      dispatch(loadExercisesByUser());
+    }
+
+    // Each time the user is logged in lets update its exercise list
+    RCTDeviceEventEmitter.addListener(
+      FBLoginManager.Events["Login"],
+      () => {
+        dispatch(loadExercisesByUser());
+      }
+    );
+  }
   render() {
-    const { user } = this.props;
     return (
       <View style={styles.container}>
-        {user.isLoggedIn ? <Landing /> : <Auth />}
+        <StatusBar
+          backgroundColor="blue"
+          barStyle="light-content"
+        />
+        <BrorNavigator />
       </View>
     )
   }

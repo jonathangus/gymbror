@@ -4,7 +4,6 @@ var Workout = require('../app/models/workout');
 module.exports = function(router) {
   router.route('/workouts/:user_id')
     .get(function (req, res) {
-      console.log(req.params.user_id);
       Workout.find({userId: req.params.user_id}, function (err, workouts) {
         if (err)
           res.send(err);

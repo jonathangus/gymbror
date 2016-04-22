@@ -2,13 +2,14 @@ import { FBLoginManager } from 'NativeModules';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../reducers/user';
 import WorkoutList from '../WorkoutList/WorkoutList';
+import AddWorkout from '../AddWorkout/AddWorkout';
 import styles from './styles';
 
 import React, {
-  AppRegistry,
   Component,
   StyleSheet,
   Text,
+  Image,
   View,
   TouchableHighlight
 } from 'react-native';
@@ -19,20 +20,37 @@ class Landing extends Component {
     FBLoginManager.logout(function(error, data){
       if (!error) {
        dispatch(logoutUser());
-      } else {
-        console.log(error, data);
       }
     });
+  }
+
+  _addWorkoutView() {
+
+  }
+
+  _exerciseListView() {
+    this.props.navigator.push({exerciseList: 1});
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Landing</Text>
+        <Image
+          style={styles.image}
+          source={require('./arnold.jpg')}
+        />
 
         <WorkoutList />
 
-        <TouchableHighlight style={styles.logout} onPress={this._logoutUser.bind(this)}>
+        <TouchableHighlight style={styles.action} onPress={this._exerciseListView.bind(this)}>
+          <Text>Exercises</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={styles.action} onPress={this._addWorkoutView.bind(this)}>
+          <Text>AddWorkout</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={styles.action} onPress={this._logoutUser.bind(this)}>
           <Text>Logout</Text>
         </TouchableHighlight>
       </View>

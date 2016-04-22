@@ -4,9 +4,14 @@ export default StyleSheet.create({
   container: {
     flex: 1
   },
-  logout: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: null
   },
+  action: {
+    marginTop: 30,
+    marginBottom: 30
+  }
 });

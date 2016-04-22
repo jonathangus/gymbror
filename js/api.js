@@ -22,3 +22,11 @@ export function reciveWorkouts(userId) {
   };
   return fetch(API_PATH + 'workouts/' + userId, postData);
 }
+
+export function loadExercises(userId) {
+  const postData = {
+    'method': 'GET',
+    'Content-Type': 'application/json'
+  };
+  return fetch(API_PATH + 'exercises/' + userId, postData);
+}
