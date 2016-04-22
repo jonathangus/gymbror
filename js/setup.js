@@ -7,8 +7,8 @@ export default class Root extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLoading: false,
-      store: configureStore(),
+      isLoading: true,
+      store: configureStore(() => this.setState({isLoading: false})),
     };
   }
 

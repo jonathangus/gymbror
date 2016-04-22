@@ -5,11 +5,12 @@ import FBLogin from 'react-native-facebook-login';
 import { FBLoginManager } from 'NativeModules';
 import { connect } from 'react-redux';
 import styles from './styles';
+import { setUser, logoutUser } from '../../reducers/user';
 
 const {
   Component,
   View,
-  } = React;
+} = React;
 
 class Auth extends Component {
   constructor(props) {
@@ -18,13 +19,12 @@ class Auth extends Component {
 
   onLogin(data) {
     const { dispatch } = this.props;
-    console.log(data);
-    //dispatch(setUser(data.credentials));
+    dispatch(setUser(data.credentials));
   }
 
-  onLogout(data) {
+  onLogout() {
     const { dispatch } = this.props;
-    console.log(data);
+    dispatch(logoutUser());
   }
 
   render() {
@@ -40,7 +40,7 @@ class Auth extends Component {
             permissions={['email','user_friends']}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
             onLogin={this.onLogin.bind(this)}
-            onLogout={this.onLogout.bind(this)} />
+            onLogout={() => console.log('OUT')} />
         </View>
       </View>
     )
