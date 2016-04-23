@@ -10,8 +10,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: null
   },
+  actions: {
+    flex:2
+  },
   action: {
-    marginTop: 30,
-    marginBottom: 30
+    padding: 10,
+    borderBottomWidth: 0.5,
+    borderTopWidth: 0,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)'
   }
 });

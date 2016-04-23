@@ -1,9 +1,9 @@
 import { FBLoginManager } from 'NativeModules';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../reducers/user';
-import WorkoutList from '../WorkoutList/WorkoutList';
 import AddWorkout from '../AddWorkout/AddWorkout';
 import styles from './styles';
+import NavigationBar from 'react-native-navbar';
 
 import React, {
   Component,
@@ -32,24 +32,30 @@ class Landing extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationBar
+          title={{ title: 'Gymbror' }}
+          rightButton={{
+            title: 'Logout',
+            handler: this._logoutUser.bind(this)
+          }}/>
         <Image
           style={styles.image}
           source={require('./arnold.jpg')}
         />
 
-        <WorkoutList navigator={this.props.navigator}/>
+        <View style={styles.actions}>
+          <TouchableHighlight underlayColor="#F3F5F9"  style={styles.action} onPress={() => this.props.navigator.push({workoutList: 1})}>
+            <Text>Completed Workouts</Text>
+          </TouchableHighlight>
 
-        <TouchableHighlight style={styles.action} onPress={this._exerciseListView.bind(this)}>
-          <Text>Exercises</Text>
-        </TouchableHighlight>
+          <TouchableHighlight underlayColor="#F3F5F9" style={styles.action} onPress={this._exerciseListView.bind(this)}>
+            <Text>Exercises</Text>
+          </TouchableHighlight>
 
-        <TouchableHighlight style={styles.action} onPress={() => this.props.navigator.push({addWorkout: 1})}>
-          <Text>AddWorkout</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.action} onPress={this._logoutUser.bind(this)}>
-          <Text>Logout</Text>
-        </TouchableHighlight>
+          <TouchableHighlight underlayColor="#F3F5F9"  style={styles.action} onPress={() => this.props.navigator.push({addWorkout: 1})}>
+            <Text>Add workout</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }

@@ -21,12 +21,11 @@ export default class WorkoutInformation extends Component {
             title={{ title: 'Workout information' }}
             leftButton={{
               title: 'Back',
-              handler: () => {this.props.navigator.push({})}
+              handler: () => {this.props.navigator.push({workoutList: 1})}
             }}/>
           <Text>Workout detail</Text>
           <Text>{moment(workoutData.date).format('dddd, MMMM Do YYYY, h:mm:ss a')}</Text>
             {workoutData.exerciseUnits ? workoutData.exerciseUnits.map((unit, i) => {
-              console.log(unit);
               return (
                 <View key={i}>
                   <Text>ExerciseID: {unit.exerciseId}</Text>

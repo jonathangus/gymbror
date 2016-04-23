@@ -7,6 +7,7 @@ import ExerciseInformation from '../ExerciseInformation/ExerciseInformation';
 import AddWorkout from '../AddWorkout/AddWorkout';
 import AddExerciseSession from '../AddExerciseSession/AddExerciseSession';
 import WorkoutInformation from '../WorkoutInformation/WorkoutInformation';
+import WorkoutList from '../WorkoutList/WorkoutList';
 
 import React, {
   Navigator,
@@ -22,6 +23,9 @@ class BrorNavigator extends Component {
     }
     else if(route.newExercise) {
       return <NewExerciseView navigator={navigator} />
+    }
+    else if(route.workoutList) {
+      return <WorkoutList navigator={navigator} />
     }
     else if(route.workoutInformation) {
       return <WorkoutInformation navigator={navigator} workoutData={route.workoutData} />

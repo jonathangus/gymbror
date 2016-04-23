@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
 import moment from 'moment';
+import NavigationBar from 'react-native-navbar';
 
 import React, {
   AppRegistry,
@@ -26,9 +27,15 @@ class WorkoutList extends Component {
     const { workouts } = this.props;
     return (
       <View>
+        <NavigationBar
+          title={{ title: 'Workout information' }}
+          leftButton={{
+              title: 'Back',
+              handler: () => {this.props.navigator.push({})}
+            }}/>
         <Text>WorkoutList</Text>
         {workouts.items.map((workout, i) => {
-          return <TouchableHighlight onPress={this.goToWorkout.bind(this, workout)}>
+          return <TouchableHighlight key={i} onPress={this.goToWorkout.bind(this, workout)}>
             <Text key={i}>{moment(workout.date).format('dddd, MMMM Do YYYY, h:mm:ss a')}</Text>
           </TouchableHighlight>
         })}

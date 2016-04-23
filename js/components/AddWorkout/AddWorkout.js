@@ -79,11 +79,6 @@ class AddWorkout extends Component {
           <Text>Add exercise</Text>
         </TouchableHighlight>
 
-        <DatePickerIOS
-          date={this.state.date}
-          mode="datetime"
-          timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-          onDateChange={this.onDateChange.bind(this)} />
 
         {workouts.currentSessions.length > 0 ? <TouchableHighlight
           style={styles.button}
@@ -102,3 +97,9 @@ export default connect(
     workouts: state.workouts
   })
 )(AddWorkout);
+
+//<DatePickerIOS
+//  date={this.state.date}
+//  mode="datetime"
+//  timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+//  onDateChange={this.onDateChange.bind(this)} />

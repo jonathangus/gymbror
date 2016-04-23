@@ -87,7 +87,7 @@ class AddWorkout extends Component {
             selectedValue={this.state.selectedExercise ? this.state.selectedExercise.value : null}
             onValueChange={(exercise, index) => this.setState({
               selectedExercise: {
-                name: exercises.exercisesFromUser[index].name,
+                name: trimmedExercises[index].name,
                 value: exercise
               }
             })}>
