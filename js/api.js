@@ -3,12 +3,18 @@ const API_PATH = 'http://localhost:8080/api/v1/';
 /**
  * Workouts
  */
-export function createWorkout() {
-  let postData = {
-    'method': 'POST',
-    'Content-Type': 'application/json'
-  };
-  return fetch(API_PATH + 'workout', postData);
+export function createWorkout(workoutData) {
+  const postData = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Origin': '',
+      'Host': 'http://localhost:8080'
+    },
+    body: JSON.stringify(workoutData)
+  }
+  return fetch(API_PATH + 'add_workout', postData);
 }
 
 export function reciveWorkouts(userId) {

@@ -37,7 +37,7 @@ class Landing extends Component {
           source={require('./arnold.jpg')}
         />
 
-        <WorkoutList />
+        <WorkoutList navigator={this.props.navigator}/>
 
         <TouchableHighlight style={styles.action} onPress={this._exerciseListView.bind(this)}>
           <Text>Exercises</Text>

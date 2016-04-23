@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 
 var WorkoutSchema  = new Schema({
   userId: '',
-  entered_at: {type: Date, required: true, default: Date},
+  date: {type: Date, required: true, default: Date},
   exerciseUnits: Array
 });
 

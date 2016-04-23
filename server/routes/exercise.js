@@ -1,22 +1,23 @@
 var express = require('express');
 var Exercise = require('../app/models/exercise');
 var ExerciseSession = require('../app/models/exercise_unit');
-var mongoose = require('mongoose');
 
 module.exports = function(router) {
   router.route('/exercises/:user_id')
     .get(function(req, res) {
-      Exercise.find({userId: req.params.user_id}, function(err, exercises) {
-        //if(err)
-        //  res.send(err);
-        //
-        //res.json(exercises);
-      })
-      .populate('sessions')
-      .exec(function(err, exercises) {
-        console.log(exercises);
-        res.json(exercises);
-      })
+      Exercise
+        .find({userId: req.params.user_id})
+        .populate({path: 'sessions', options: {
+          sort : {
+            'entered_at': -1
+          }
+        }})
+        .exec(function(err, exercises) {
+          if(err) {
+            res.send(err);
+          }
+          res.json(exercises);
+        });
     });
 
   router.route('/exercise/:id')
@@ -77,7 +78,7 @@ module.exports = function(router) {
           exerciseId: req.params.exercise_id,
           sets: req.body.sets
         });
-        
+
         session.save();
         exercise.sessions.push(session);
 

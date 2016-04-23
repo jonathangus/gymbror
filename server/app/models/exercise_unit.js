@@ -5,7 +5,7 @@ var ExerciseSessionSchema = new Schema({
   userId: Number,
   exerciseId: String,
   sets: Array,
-  entered_at: {type: Date, required: true, default: Date},
+  date: {type: Date, required: true, default: Date},
 });
 
 module.exports = mongoose.model('ExerciseSession', ExerciseSessionSchema);
