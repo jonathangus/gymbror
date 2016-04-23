@@ -4,6 +4,7 @@ import BrorNavigator from '../BrorNavigator/BrorNavigator';
 import { loadExercisesByUser } from '../../reducers/exercises';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 import { FBLoginManager } from 'NativeModules';
+import { MessageBar, MessageBarManager } from 'react-native-message-bar';
 
 import React, {
   Component,
@@ -14,6 +15,7 @@ import React, {
 class App extends Component {
   componentDidMount() {
     const { dispatch, user } = this.props;
+    // Load exercises
     if(user.isLoggedIn) {
       dispatch(loadExercisesByUser());
     }
@@ -22,10 +24,19 @@ class App extends Component {
     RCTDeviceEventEmitter.addListener(
       FBLoginManager.Events["Login"],
       () => {
-        dispatch(loadExercisesByUser());
+        setTimeout(() => dispatch(loadExercisesByUser()), 300);
       }
     );
+
+    // Take care of messages
+    MessageBarManager.registerMessageBar(this.refs.alert);
   }
+
+  componentWillUnmount() {
+    // Remove the alert located on this master page from the manager
+    MessageBarManager.unregisterMessageBar();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -34,6 +45,7 @@ class App extends Component {
           barStyle="light-content"
         />
         <BrorNavigator />
+        <MessageBar ref="alert" />
       </View>
     )
   }

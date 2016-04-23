@@ -2,6 +2,9 @@ import React from 'react-native';
 import { connect } from 'react-redux';
 import styles from './styles';
 import Swipeout from 'react-native-swipeout';
+import NavigationBar from 'react-native-navbar';
+import { deleteExercise } from '../../reducers/exercises';
+import Icon from 'react-native-vector-icons/Entypo';
 
 const {
   Component,
@@ -12,6 +15,7 @@ const {
   TouchableHighlight
   } = React;
 
+let selectedExercise;
 
 class ExerciseList extends Component {
   constructor(props) {
@@ -32,11 +36,12 @@ class ExerciseList extends Component {
         backgroundColor: 'red',
         autoClose: true,
         onPress:() => {
+          console.log(selectedExercise);
           AlertIOS.alert(
             'Remove exercise',
             'Do you really wanna remove this exercise?',
             [{text: 'Remove', onPress: () => {
-                const {dispatch} = this.props;
+                const { dispatch } = this.props;
                 dispatch(deleteExercise(selectedExercise));
               }
             },
@@ -47,11 +52,6 @@ class ExerciseList extends Component {
       }
     ]
   }
-
-  //componentWillMount() {
-  //  const {dispatch, user} = this.props;
-  //  dispatch(fetchExercisesIfNeeded())
-  //}
 
   componentDidMount() {
     const {exercises} = this.props;
@@ -64,29 +64,6 @@ class ExerciseList extends Component {
     }
   }
 
-
-  //_hideModal() {
-  //  this.setState({
-  //    modalVisible: false
-  //  });
-  //}
-
-  //_showModal() {
-  //  this.setState({
-  //    modalVisible: true
-  //  });
-  //}
-
-  //_addExercise() {
-  //  var value = this.refs.form.getValue();
-  //  if (value) {
-  //    const {dispatch} = this.props;
-  //    dispatch(addExercise(value));
-  //    this.setState({
-  //      modalVisible: false
-  //    });
-  //  }
-  //}
 
   _updateDataSource(data) {
     this.setState({
@@ -108,9 +85,6 @@ class ExerciseList extends Component {
     this._updateDataSource(rows)
   }
 
-  _addNewExercise() {
-    this.props.navigator.push({newExercise: 1});
-  }
 
   _goToExercise(exerciseData) {
   //  this.props.dispatch(selectExercise(exerciseData));
@@ -122,13 +96,13 @@ class ExerciseList extends Component {
   //  });
   }
 
-  //componentWillReceiveProps(nextProps) {
-  //  const exercises = nextProps.exercises;
-  //  let dataSource = this.state.dataSource.cloneWithRows(exercises.exercisesFromUser)
-  //  this.setState({
-  //    dataSource: dataSource
-  //  });
-  //}
+  componentWillReceiveProps(nextProps) {
+    const { exercises } = nextProps;
+    let dataSource = this.state.dataSource.cloneWithRows(exercises.exercisesFromUser)
+    this.setState({
+      dataSource: dataSource
+    });
+  }
 
   _renderRow(rowData: string, sectionID: number, rowID: number) {
     return (
@@ -147,18 +121,30 @@ class ExerciseList extends Component {
     )
   }
 
-  render() {
+  leftButtonConfig() {
+    return {
+      title: 'Back',
+      handler: () => this.props.navigator.push({})
+    };
+  }
 
+  render() {
+    const rightButtonAdd = <TouchableHighlight style={styles.addButton} onPress={() => this.props.navigator.push({newExercise: 1})}><Icon
+      name="plus"
+      size={30}
+      backgroundColor="#FFF"
+      color='#35BAF2'
+      ></Icon></TouchableHighlight>;
     return (
       <View style={styles.container}>
+        <NavigationBar
+          title={{ title: 'Exercises' }}
+          leftButton={this.leftButtonConfig()}
+          rightButton={rightButtonAdd}/>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this._renderRow.bind(this)}
           enableEmptySections />
-
-        <TouchableHighlight onPress={this._addNewExercise.bind(this)}>
-          <Text>Add new exercise</Text>
-        </TouchableHighlight>
       </View>
     );
   }

@@ -1,4 +1,7 @@
 import { connect } from 'react-redux';
+import { createExercise } from '../../reducers/exercises';
+import { MessageBarManager } from 'react-native-message-bar';
+import NavigationBar from 'react-native-navbar';
 
 import React, {
   Component,
@@ -19,6 +22,14 @@ class NewExerciseView extends Component {
     }
   }
 
+  _saveExercise() {
+    if(this.state.name.length > 0) {
+      const { dispatch } = this.props;
+      dispatch(createExercise(this.state.name));
+      this.props.navigator.push({exerciseList: 1});
+    }
+  }
+
   onChange(name) {
     const { exercises } = this.props;
     const suggestions = exercises.suggestedExercises.filter((exer) => {
@@ -28,6 +39,13 @@ class NewExerciseView extends Component {
       name: name,
       suggestions: suggestions
     });
+  }
+
+  leftButtonConfig() {
+    return {
+      title: 'Back',
+      handler: () => this.props.navigator.push({exerciseList: 1})
+    };
   }
 
   render() {
@@ -40,14 +58,16 @@ class NewExerciseView extends Component {
     });
     return (
       <View style={styles.container}>
-        <Text>NewExerciseView</Text>
+        <NavigationBar
+          title={{ title: 'Add new exercise' }}
+          leftButton={this.leftButtonConfig()}/>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={this.onChange.bind(this)}
           value={this.state.name}
         />
         {suggestions}
-        <TouchableHighlight style={styles.save} onPress={this.onPress} underlayColor='#99d9f4'>
+        <TouchableHighlight style={styles.save} onPress={this._saveExercise.bind(this)} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>Save</Text>
         </TouchableHighlight>
       </View>

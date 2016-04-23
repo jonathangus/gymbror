@@ -4,17 +4,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
   },
-  topBar: {
-    padding: 10,
-    marginTop: 10,
-    alignSelf: 'flex-end'
-  },
-  loader: {
-    height: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 50,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1)'
+  addButton: {
+    padding: 10
   },
   row: {
     flex:1,

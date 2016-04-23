@@ -25,7 +25,6 @@ class Landing extends Component {
   }
 
   _addWorkoutView() {
-
   }
 
   _exerciseListView() {

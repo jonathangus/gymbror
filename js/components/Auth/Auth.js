@@ -40,7 +40,7 @@ class Auth extends Component {
             permissions={['email','user_friends']}
             loginBehavior={FBLoginManager.LoginBehaviors.Native}
             onLogin={this.onLogin.bind(this)}
-            onLogout={() => console.log('OUT')} />
+            onLogout={this.onLogout.bind(this)} />
         </View>
       </View>
     )

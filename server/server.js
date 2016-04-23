@@ -105,17 +105,7 @@ router.get('/', function(req, res) {
 //    })
 //
 //    // delete the exercise with this id (accessed at DELETE http://localhost:8080/api/exercises/:exercise_id)
-//    .delete(function(req, res) {
-//        Exercise.remove({
-//            _id: req.params.exercise_id
-//        }, function(err, exercise) {
-//            if (err) {
-//              res.send(err);
-//            }
 //
-//            res.json({ message: 'Successfully deleted' });
-//        });
-//    });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

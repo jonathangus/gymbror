@@ -15,7 +15,7 @@ module.exports = function(router) {
     .post(function(req, res) {
       var workout = new Workout();
 
-      if(!workout.userId && !workout.exerciseUnits) {
+      if(!req.body.userId && !req.body.exerciseUnits) {
         res.send('Missing data');
         return;
       }
