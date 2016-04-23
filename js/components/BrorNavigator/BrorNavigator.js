@@ -4,6 +4,8 @@ import Auth from '../Auth/Auth';
 import NewExerciseView from '../NewExerciseView/NewExerciseView';
 import ExerciseList from '../ExerciseList/ExerciseList';
 import ExerciseInformation from '../ExerciseInformation/ExerciseInformation';
+import AddWorkout from '../AddWorkout/AddWorkout';
+import AddExerciseSession from '../AddExerciseSession/AddExerciseSession';
 
 import React, {
   Navigator,
@@ -20,9 +22,16 @@ class BrorNavigator extends Component {
     else if(route.newExercise) {
       return <NewExerciseView navigator={navigator} />
     }
+    else if(route.addWorkout) {
+      return <AddWorkout navigator={navigator} />
+    }
     else if(route.ExerciseInformation) {
       return <ExerciseInformation data={route.exercise} navigator={navigator} />
     }
+    else if(route.AddExerciseSession) {
+      return <AddExerciseSession navigator={navigator} />
+    }
+
     const { user } = this.props
     return user.isLoggedIn ? <Landing navigator={navigator} /> : <Auth />;
   }

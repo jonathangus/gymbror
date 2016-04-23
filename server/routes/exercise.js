@@ -1,14 +1,22 @@
 var express = require('express');
 var Exercise = require('../app/models/exercise');
+var ExerciseSession = require('../app/models/exercise_unit');
+var mongoose = require('mongoose');
 
 module.exports = function(router) {
   router.route('/exercises/:user_id')
     .get(function(req, res) {
       Exercise.find({userId: req.params.user_id}, function(err, exercises) {
-        if(err)
-          res.send(err);
+        //if(err)
+        //  res.send(err);
+        //
+        //res.json(exercises);
+      })
+      .populate('sessions')
+      .exec(function(err, exercises) {
+        console.log(exercises);
         res.json(exercises);
-      });
+      })
     });
 
   router.route('/exercise/:id')
@@ -55,6 +63,33 @@ module.exports = function(router) {
 
             res.json({ message: 'Successfully deleted' });
         });
+    });
+
+  router.route('/add_session/:exercise_id')
+    .put(function(req, res) {
+      Exercise.findById(req.params.exercise_id, function(err, exercise) {
+        if (err)
+          res.send(err);
+        exercise.sessions = exercise.sessions || [];
+
+        var session = new ExerciseSession({
+          userId: req.body.userId,
+          exerciseId: req.params.exercise_id,
+          sets: req.body.sets
+        });
+        
+        session.save();
+        exercise.sessions.push(session);
+
+        exercise.save(function(err) {
+          if (err)
+            res.send(err);
+
+          res.json({ message: 'Session added' });
+        });
+
+
+      });
     });
 
 }

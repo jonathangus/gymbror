@@ -24,8 +24,6 @@ class Landing extends Component {
     });
   }
 
-  _addWorkoutView() {
-  }
 
   _exerciseListView() {
     this.props.navigator.push({exerciseList: 1});
@@ -45,7 +43,7 @@ class Landing extends Component {
           <Text>Exercises</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.action} onPress={this._addWorkoutView.bind(this)}>
+        <TouchableHighlight style={styles.action} onPress={() => this.props.navigator.push({addWorkout: 1})}>
           <Text>AddWorkout</Text>
         </TouchableHighlight>
 
