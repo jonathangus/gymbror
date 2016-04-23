@@ -11,6 +11,19 @@ module.exports = function(router) {
       });
     });
 
+  router.route('/exercise/:id')
+    .get(function(req, res) {
+      Exercise.findOne({_id: req.params.id}, function(err, exercise) {
+        if(err)
+          res.send(err);
+          var newExercise = exercise.toJSON();
+          newExercise.sessions = [
+            123123, 1231231, 399123, 1981238
+          ];
+        res.json(newExercise);
+      });
+    });
+
   router.route('/add_exercise')
     .post(function(req, res) {
       var exercise = new Exercise();

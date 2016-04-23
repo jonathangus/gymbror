@@ -54,3 +54,11 @@ export function newExercise(exerciseName, userId) {
   }
   return fetch(API_PATH + 'add_exercise', postData);
 }
+
+export function getDetailedInformation(exerciseId) {
+  const postData = {
+    'method': 'GET',
+    'Content-Type': 'application/json'
+  };
+  return fetch(API_PATH + 'exercise/' + exerciseId, postData);
+}

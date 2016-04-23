@@ -64,7 +64,6 @@ class ExerciseList extends Component {
     }
   }
 
-
   _updateDataSource(data) {
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(data)
@@ -85,15 +84,8 @@ class ExerciseList extends Component {
     this._updateDataSource(rows)
   }
 
-
   _goToExercise(exerciseData) {
-  //  this.props.dispatch(selectExercise(exerciseData));
-  //
-  //  this.props.navigator.push({
-  //    title: exerciseData.name,
-  //    component: Exercise,
-  //    passProps: {exerciseData},
-  //  });
+    this.props.navigator.push({ExerciseInformation: 1, exercise: exerciseData});
   }
 
   componentWillReceiveProps(nextProps) {
