@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { createExercise } from '../../reducers/exercises';
 import { MessageBarManager } from 'react-native-message-bar';
 import NavigationBar from 'react-native-navbar';
+import Back from '../Back/Back';
 
 import React, {
   Component,
@@ -41,14 +42,8 @@ class NewExerciseView extends Component {
     });
   }
 
-  leftButtonConfig() {
-    return {
-      title: 'Back',
-      handler: () => this.props.navigator.push({exerciseList: 1})
-    };
-  }
-
   render() {
+    const leftButton = <Back onPress={this.props.navigator.push({exerciseList: 1})} />;
     const suggestions = this.state.suggestions.map((s, i) => {
       return <TouchableHighlight
         key={i}
@@ -60,7 +55,7 @@ class NewExerciseView extends Component {
       <View style={styles.container}>
         <NavigationBar
           title={{ title: 'Add new exercise' }}
-          leftButton={this.leftButtonConfig()}/>
+          leftButton={leftButton}/>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1}}
           onChangeText={this.onChange.bind(this)}

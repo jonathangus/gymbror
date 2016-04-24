@@ -74,3 +74,12 @@ export function getDetailedInformation(exerciseId) {
   };
   return fetch(API_PATH + 'exercise/' + exerciseId, postData);
 }
+
+// Test server
+export function testServer() {
+  const postData = {
+    'method': 'GET',
+    'Content-Type': 'application/json'
+  };
+  return fetch(API_PATH + 'server_status/', postData);
+}

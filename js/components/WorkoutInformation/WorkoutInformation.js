@@ -1,5 +1,4 @@
 import NavigationBar from 'react-native-navbar';
-import moment from 'moment';
 import Button from '../Button/Button';
 import { deleteWorkout } from '../../reducers/workouts';
 import { connect } from 'react-redux';

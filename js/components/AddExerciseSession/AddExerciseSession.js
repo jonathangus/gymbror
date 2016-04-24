@@ -41,14 +41,17 @@ class AddWorkout extends Component {
     const { exercises } = this.props;
     const exerciseId = this.state.selectedExercise.value;
     const selectedExercise = _.find(exercises.exercisesFromUser, {'_id': exerciseId});
+    console.log(selectedExercise);
     if(selectedExercise.sessions.length == 0) {
       this.setState({
         rows: defaultValues
       });
     }
     else {
+      const sorted = _.sortBy(selectedExercise.sessions, (value) => new Date(value.date));
+      console.log(sorted);
       this.setState({
-        rows: selectedExercise.sessions[0].sets
+        rows: sorted[sorted.length - 1].sets
       })
     }
   }

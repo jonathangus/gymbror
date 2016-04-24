@@ -2,8 +2,11 @@ import { connect } from 'react-redux';
 import WorkoutList from '../WorkoutList/WorkoutList';
 import styles from './styles';
 import NavigationBar from 'react-native-navbar';
-import Icon from 'react-native-vector-icons/Entypo';
-import { removeExerciseSession, createNewWorkout } from '../../reducers/workouts';
+import { removeExerciseSession, createNewWorkout, setWorkoutDate } from '../../reducers/workouts';
+import Back from '../Back/Back';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import G from '../../global';
+import moment from 'moment';
 
 import React, {
   Component,
@@ -11,14 +14,22 @@ import React, {
   View,
   TouchableHighlight,
   Picker,
-  DatePickerIOS
+  DatePickerIOS,
+  AlertIOS,
+  Animated,
+  Dimensions
 } from 'react-native';
 
 class AddWorkout extends Component {
   constructor(props) {
     super(props);
+    const deviceHeight = Dimensions.get('window').height;
+
     this.state = {
-      date: new Date(),
+      deviceHeight: deviceHeight,
+      offSet: new Animated.Value(deviceHeight),
+      pickerOpen: false,
+      date: new Date(this.props.workouts.currentDate),
       timeZoneOffsetInHours:  (-1) * (new Date()).getTimezoneOffset() / 60
     }
   }
@@ -29,43 +40,75 @@ class AddWorkout extends Component {
 
   submitWorkout() {
     const { workouts, user, dispatch, navigator } = this.props;
-    const workoutData = {
-      sessions: workouts.currentSessions,
-      userId: user.data.userId,
-      date: this.state.date
-    };
-    dispatch(createNewWorkout(workoutData));
-    navigator.push({});
+    if(workouts.currentSessions.length == 0) {
+      AlertIOS.alert(
+        'Hey!',
+        'You have not added any exercises',
+        [{
+          text: 'Okidoki'
+        }]
+      );
+    }
+    else {
+      const workoutData = {
+        sessions: workouts.currentSessions,
+        userId: user.data.userId,
+        date: this.state.date
+      };
+      dispatch(createNewWorkout(workoutData));
+      navigator.push({});
+    }
   }
 
   onDateChange(date) {
+    this.props.dispatch(setWorkoutDate(date));
     this.setState({date: date});
   }
 
+  openPicker() {
+    this.setState({pickerOpen: true});
+    Animated.timing(this.state.offSet, {
+      duration: 300,
+      toValue: 100
+    }).start()
+  }
+
+  closePicker() {
+    Animated.timing(this.state.offSet, {
+      duration: 300,
+      toValue: this.state.deviceHeight
+    }).start(() => {
+      this.setState({pickerOpen: false})
+    })
+  }
+
   render() {
-    const exitIcon = <TouchableHighlight style={styles.closeButton} onPress={() => this.props.navigator.push({})}><Icon
-      name="cross"
-      size={30}
-      backgroundColor="#FFF"
-      color='#35BAF2'
-    ></Icon></TouchableHighlight>;
+    const exitIcon = <Back onPress={() => this.props.navigator.push({})} />
     const { workouts } = this.props;
 
     return (
       <View style={styles.container}>
         <NavigationBar
           title={{ title: 'Add new workout' }}
-          leftButton={exitIcon}/>
+          leftButton={exitIcon}
+          rightButton={{
+            title: 'Finish',
+            handler: this.submitWorkout.bind(this)
+          }}
+        />
+        <View style={styles.section}>
+          <Text style={G.label}>{'Exercise log:'.toUpperCase()}</Text>
+        </View>
         {workouts.currentSessions.map((session, i) => {
           return (
             <View key={i} style={styles.row}>
-              <Text style={styles.rowText}key={i}>{session.name || session.exerciseId}</Text>
+              <Text style={styles.rowText}key={i}>{session.name}</Text>
               <TouchableHighlight
                 onPress={this.removeSession.bind(this, session)}>
                 <Icon
                   style={styles.removeRow}
-                  name="cross"
-                  size={30}
+                  name="close"
+                  size={20}
                   backgroundColor="#FFF"
                   color='#222222'
                 ></Icon>
@@ -73,22 +116,46 @@ class AddWorkout extends Component {
             </View>
           )})}
         <TouchableHighlight
-          style={styles.button}
+          style={styles.row}
+          underlayColor={G.primary}
           onPress={() => this.props.navigator.push({AddExerciseSession: 1})}>
-          <Text>Add exercise</Text>
+          <View style={styles.addExercise}>
+            <Icon
+              name="plus"
+              size={27}
+              style={styles.addIcon}
+              backgroundColor="#FFF"
+              color={G.primary} />
+            <Text>Add exercise</Text>
+          </View>
         </TouchableHighlight>
 
-        <DatePickerIOS
-          date={this.state.date}
-          mode="datetime"
-          timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-          onDateChange={this.onDateChange.bind(this)} />
+        <View style={styles.section}>
+          <Text style={G.label}>{'Edit workout date:'.toUpperCase()}</Text>
+        </View>
 
-        {workouts.currentSessions.length > 0 ? <TouchableHighlight
-          style={styles.button}
-          onPress={this.submitWorkout.bind(this)}>
-          <Text>Submit workout</Text>
-        </TouchableHighlight>: null }
+        <TouchableHighlight
+          style={styles.row}
+          underlayColor={G.primary}
+          onPress={() => this.state.pickerOpen ? this.closePicker() : this.openPicker()}>
+          <View style={styles.addExercise}>
+            <Text>{moment(this.state.date).format('D MMM. YYYY, HH:mm').toLowerCase()}</Text>
+          </View>
+        </TouchableHighlight>
+
+        {this.state.pickerOpen ?
+          <Animated.View style={{ transform: [{translateY:this.state.offSet}] }}>
+            <View style={styles.pickerTop}>
+              <Text style={styles.pickerTopText} onPress={this.closePicker.bind(this)}>Done</Text>
+            </View>
+            <DatePickerIOS
+            date={this.state.date}
+            mode="datetime"
+            maximumDate={new Date()}
+            timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+            onDateChange={this.onDateChange.bind(this)} />
+        </Animated.View>
+        : null}
       </View>
     );
   }
@@ -101,9 +168,3 @@ export default connect(
     workouts: state.workouts
   })
 )(AddWorkout);
-
-//<DatePickerIOS
-//  date={this.state.date}
-//  mode="datetime"
-//  timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-//  onDateChange={this.onDateChange.bind(this)} />

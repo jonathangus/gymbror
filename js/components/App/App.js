@@ -5,6 +5,8 @@ import { loadExercisesByUser } from '../../reducers/exercises';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 import { FBLoginManager } from 'NativeModules';
 import { MessageBar, MessageBarManager } from 'react-native-message-bar';
+import { testServer } from '../../api';
+import { errorMessage } from '../../error_handling';
 
 import React, {
   Component,
@@ -19,6 +21,9 @@ class App extends Component {
     if(user.isLoggedIn) {
       dispatch(loadExercisesByUser());
     }
+
+    // Test server
+    testServer().catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
 
     // Each time the user is logged in lets update its exercise list
     RCTDeviceEventEmitter.addListener(

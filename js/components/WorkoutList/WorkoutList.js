@@ -5,6 +5,7 @@ import NavigationBar from 'react-native-navbar';
 import _ from 'lodash'
 import G from '../../global';
 import Button from '../Button/Button';
+import Back from '../Back/Back';
 
 import React, {
   AppRegistry,

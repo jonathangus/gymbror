@@ -10,11 +10,13 @@ const ADD_EXERCISE_SESSION = 'ADD_EXERCISE_SESSION';
 const REMOVE_EXERCISE_SESSION = 'REMOVE_EXERCISE_SESSION';
 const WORKOUT_CREATED = 'WORKOUT_CREATED';
 const DELETE_WORKOUT = 'DELETE_WORKOUT';
+const SET_WORKOUT_DATE = 'SET_WORKOUT_DATE';
 
 const initialState = {
   items: [],
   isFetching: false,
-  currentSessions: []
+  currentSessions: [],
+  currentDate: new Date()
 };
 
 export default function workouts(state = initialState, action) {
@@ -49,6 +51,12 @@ export default function workouts(state = initialState, action) {
         currentSessions: []
       }
 
+    case SET_WORKOUT_DATE:
+      return {
+        ...state,
+        currentDate: action.date
+      }
+
     case DELETE_WORKOUT: {
       return {
         ...state,
@@ -63,6 +71,13 @@ export default function workouts(state = initialState, action) {
   }
 
   return state;
+}
+
+export function setWorkoutDate(date) {
+  return {
+    type: SET_WORKOUT_DATE,
+    date: date
+  }
 }
 
 export function refreshWorkouts() {

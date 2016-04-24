@@ -1,22 +1,26 @@
 var express = require('express');
 var Exercise = require('../app/models/exercise');
 var ExerciseSession = require('../app/models/exercise_unit');
+var _ = require('lodash');
 
 module.exports = function(router) {
   router.route('/exercises/:user_id')
     .get(function(req, res) {
       Exercise
-        .find({userId: req.params.user_id})
-        .populate({path: 'sessions', options: {
-          sort : {
-            'date': -1
-          }
-        }})
-        .exec(function(err, exercises) {
-          if(err) {
-            res.send(err);
-          }
-          res.json(exercises);
+        .find({userId: req.params.user_id}, function(err, exercises) {
+          // Map the docs into an array of just the _ids
+          var ids = exercises.map(function(ex) { return ex._id; });
+          ExerciseSession.find({exercise: {$in: ids}}, function(err, sessions){
+            if(err) {
+              res.send(err);
+            }
+            exercises.forEach(function(ex) {
+              ex.sessions = sessions.filter(function(sess) {
+                return sess.exercise.toString() == ex._id.toString();
+              });
+            });
+            res.json(exercises);
+          });
         });
     });
 

@@ -7,10 +7,11 @@ export function defaultError() {
   });
 }
 
-export function errorMessage(message) {
+export function errorMessage(message, text = '') {
   return MessageBarManager.showAlert({
     title: message,
     alertType: 'error',
+    message: text
   });
 }
 

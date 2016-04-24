@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import G from '../../global';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: G.grey
   },
   button: {
     padding: 15
@@ -10,20 +12,38 @@ export default StyleSheet.create({
   closeButton: {
     padding: 6
   },
-  row: {
-    padding: 10,
+  addExercise: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    alignItems: 'center',
+    flex: 1,
+  },
+  addIcon: {
+    marginRight: 7,
+  },
+  row: {
+    flexDirection: 'row',
     padding: 10,
-    borderBottomWidth: 0.5,
+    borderBottomWidth:1,
     borderTopWidth: 0,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)',
-    flexDirection: 'row',
+    backgroundColor: 'white'
   },
   rowItem: {
     flex: 1,
   },
   rowText: {
     flex: 1
+  },
+  section: {
+    marginTop: 15
+  },
+  pickerTop: {
+    padding: 10,
+    backgroundColor: '#7f8c8d',
+    alignItems: 'flex-end',
+  },
+  pickerTopText: {
+    color: 'white',
   }
+
 });
