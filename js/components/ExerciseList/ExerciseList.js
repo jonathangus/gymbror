@@ -36,7 +36,6 @@ class ExerciseList extends Component {
         backgroundColor: 'red',
         autoClose: true,
         onPress:() => {
-          console.log(selectedExercise);
           AlertIOS.alert(
             'Remove exercise',
             'Do you really wanna remove this exercise?',

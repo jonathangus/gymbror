@@ -5,9 +5,19 @@ var ExerciseSession = require('../app/models/exercise_unit');
 module.exports = function(router) {
   router.route('/workouts/:user_id')
     .get(function (req, res) {
-      Workout.find({userId: req.params.user_id}, function (err, workouts) {
+      Workout
+        .find({userId: req.params.user_id})
+        .populate({
+          path: 'exerciseUnits',
+          populate: {
+            path: 'exercise',
+            model: 'Exercise'
+          }
+        })
+        .exec(function (err, workouts) {
         if (err)
           res.send(err);
+
         res.json(workouts);
       });
     });
@@ -25,7 +35,8 @@ module.exports = function(router) {
           userId: session.userId,
           exerciseId: session.exerciseId,
           sets: session.sets,
-          date: req.body.date
+          date: req.body.date,
+          exercise: session.exerciseId
         });
 
         sezch.save();
@@ -39,5 +50,20 @@ module.exports = function(router) {
         res.json({ message: 'Workout created!' });
       })
   });
+
+  router.route('/delete_workout/:workout_id')
+    .delete(function(req, res) {
+      Workout.findOneAndRemove({
+        _id: req.params.workout_id
+      }, function(err, workout) {
+        if (err) {
+          res.send(err);
+        }
+        if(workout) {
+          workout.remove();
+        }
+        res.json({ message: 'Successfully deleted' });
+      });
+    });
 
 }

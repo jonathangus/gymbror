@@ -13,3 +13,10 @@ export function errorMessage(message) {
     alertType: 'error',
   });
 }
+
+export function success(message) {
+  return MessageBarManager.showAlert({
+    title: message,
+    alertType: 'success',
+  });
+}

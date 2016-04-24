@@ -25,6 +25,12 @@ export function reciveWorkouts(userId) {
   return fetch(API_PATH + 'workouts/' + userId, postData);
 }
 
+export function removeWorkout(workoutId) {
+  let postData = {
+    'method': 'DELETE',
+  };
+  return fetch(API_PATH + 'delete_workout/' + workoutId, postData);
+}
 
 /**
  * Exercises

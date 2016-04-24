@@ -15,8 +15,8 @@ import React, {
 } from 'react-native';
 
 class AddWorkout extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       date: new Date(),
       timeZoneOffsetInHours:  (-1) * (new Date()).getTimezoneOffset() / 60
@@ -34,7 +34,6 @@ class AddWorkout extends Component {
       userId: user.data.userId,
       date: this.state.date
     };
-
     dispatch(createNewWorkout(workoutData));
     navigator.push({});
   }
@@ -79,6 +78,11 @@ class AddWorkout extends Component {
           <Text>Add exercise</Text>
         </TouchableHighlight>
 
+        <DatePickerIOS
+          date={this.state.date}
+          mode="datetime"
+          timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+          onDateChange={this.onDateChange.bind(this)} />
 
         {workouts.currentSessions.length > 0 ? <TouchableHighlight
           style={styles.button}

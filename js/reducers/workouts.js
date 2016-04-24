@@ -1,6 +1,6 @@
-import { reciveWorkouts, createWorkout } from '../api';
+import { reciveWorkouts, createWorkout, removeWorkout } from '../api';
 import _ from 'lodash';
-import { errorMessage, defaultError } from '../error_handling';
+import { errorMessage, defaultError, success } from '../error_handling';
 import { MessageBarManager } from 'react-native-message-bar';
 
 const RECIVED_WORKOUTS = 'RECIVED_WORKOUTS';
@@ -8,6 +8,7 @@ const REQUEST_WORKOUTS = 'REQUEST_WORKOUTS';
 const ADD_EXERCISE_SESSION = 'ADD_EXERCISE_SESSION';
 const REMOVE_EXERCISE_SESSION = 'REMOVE_EXERCISE_SESSION';
 const WORKOUT_CREATED = 'WORKOUT_CREATED';
+const DELETE_WORKOUT = 'DELETE_WORKOUT';
 
 const initialState = {
   items: [],
@@ -46,6 +47,16 @@ export default function workouts(state = initialState, action) {
         ...state,
         currentSessions: []
       }
+
+    case DELETE_WORKOUT: {
+      return {
+        ...state,
+        items: [
+          ...state.items.slice(0, action.index),
+          ...state.items.slice(action.index + 1)
+        ]
+      }
+    }
     default:
       return state
   }
@@ -111,11 +122,26 @@ export function createNewWorkout(workoutData) {
           type: WORKOUT_CREATED
         });
 
-        MessageBarManager.showAlert({
-          title: 'Workout created',
-          alertType: 'success',
-        });
+        success('Workout created');
       })
       .catch((err) => errorMessage(err))
+  }
+}
+
+export function deleteWorkout(workoutId) {
+  return (dispatch, getState) => {
+    const { workouts } = getState();
+
+    removeWorkout(workoutId)
+      .then(() => {
+        success('Workout removed');
+        dispatch({
+          type: DELETE_WORKOUT,
+          index: _.findIndex(workouts.items, {_id: workoutId})
+        });
+
+        dispatch(_fetchWorkouts());
+      })
+      .catch(() => errorMessage('Workout could not be deleted'));
   }
 }

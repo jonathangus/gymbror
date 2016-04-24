@@ -66,31 +66,31 @@ module.exports = function(router) {
         });
     });
 
-  router.route('/add_session/:exercise_id')
-    .put(function(req, res) {
-      Exercise.findById(req.params.exercise_id, function(err, exercise) {
-        if (err)
-          res.send(err);
-        exercise.sessions = exercise.sessions || [];
-
-        var session = new ExerciseSession({
-          userId: req.body.userId,
-          exerciseId: req.params.exercise_id,
-          sets: req.body.sets
-        });
-
-        session.save();
-        exercise.sessions.push(session);
-
-        exercise.save(function(err) {
-          if (err)
-            res.send(err);
-
-          res.json({ message: 'Session added' });
-        });
-
-
-      });
-    });
+  //router.route('/add_session/:exercise_id')
+  //  .put(function(req, res) {
+  //    Exercise.findById(req.params.exercise_id, function(err, exercise) {
+  //      if (err)
+  //        res.send(err);
+  //      exercise.sessions = exercise.sessions || [];
+  //
+  //      var session = new ExerciseSession({
+  //        userId: req.body.userId,
+  //        exerciseId: req.params.exercise_id,
+  //        sets: req.body.sets
+  //      });
+  //
+  //      session.save();
+  //      exercise.sessions.push(session);
+  //
+  //      exercise.save(function(err) {
+  //        if (err)
+  //          res.send(err);
+  //
+  //        res.json({ message: 'Session added' });
+  //      });
+  //
+  //
+  //    });
+  //  });
 
 }
