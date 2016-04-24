@@ -2,6 +2,7 @@ import { reciveWorkouts, createWorkout, removeWorkout } from '../api';
 import _ from 'lodash';
 import { errorMessage, defaultError, success } from '../error_handling';
 import { MessageBarManager } from 'react-native-message-bar';
+import { loadExercisesByUser } from './exercises';
 
 const RECIVED_WORKOUTS = 'RECIVED_WORKOUTS';
 const REQUEST_WORKOUTS = 'REQUEST_WORKOUTS';
@@ -64,12 +65,26 @@ export default function workouts(state = initialState, action) {
   return state;
 }
 
-function _fetchWorkouts() {
+export function refreshWorkouts() {
   return(dispatch, getState) => {
     dispatch({
       type: REQUEST_WORKOUTS
     });
-    
+
+    const { user } = getState();
+    reciveWorkouts(user.data.userId)
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch({
+          type: RECIVED_WORKOUTS,
+          workouts: response
+        });
+      });
+  }
+}
+
+function fetchWorkouts() {
+  return(dispatch, getState) => {
     const { user } = getState();
     reciveWorkouts(user.data.userId)
       .then((response) => response.json())
@@ -86,7 +101,7 @@ export function fetchWorkoutsIfNeeded() {
   return (dispatch, getState) => {
     const { workouts } = getState();
     if(workouts.items.length == 0) {
-      dispatch(_fetchWorkouts());
+      dispatch(fetchWorkouts());
     }
   }
 }
@@ -117,7 +132,9 @@ export function createNewWorkout(workoutData) {
     createWorkout(workoutData)
       .then((response) => response.json())
       .then((response) => {
-        dispatch(_fetchWorkouts());
+        dispatch(fetchWorkouts());
+        dispatch(loadExercisesByUser());
+
         dispatch({
           type: WORKOUT_CREATED
         });
@@ -140,7 +157,8 @@ export function deleteWorkout(workoutId) {
           index: _.findIndex(workouts.items, {_id: workoutId})
         });
 
-        dispatch(_fetchWorkouts());
+        dispatch(fetchWorkouts());
+        dispatch(loadExercisesByUser());
       })
       .catch(() => errorMessage('Workout could not be deleted'));
   }

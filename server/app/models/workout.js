@@ -5,7 +5,10 @@ var ExercuseUnit = require('./exercise_unit');
 var WorkoutSchema  = new Schema({
   userId: '',
   date: {type: Date, required: true, default: Date},
-  exerciseUnits: Array
+  exerciseUnits: [{
+    type: Schema.Types.ObjectId,
+    ref: 'ExerciseSession'
+  }]
 });
 
 WorkoutSchema.pre('remove', function(next) {

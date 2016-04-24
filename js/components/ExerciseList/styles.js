@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import G from '../../global';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: G.grey
   },
   addButton: {
     padding: 10
@@ -16,9 +18,6 @@ export default StyleSheet.create({
     borderBottomWidth: 0.5,
     borderTopWidth: 0,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)'
-  },
-  rowText: {
-    fontSize: 22,
   },
   addItemsText: {
     marginTop: 100

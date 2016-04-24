@@ -4,9 +4,10 @@ export default {
   grey: '#F3F5F9',
   basicRow: {
     padding: 10,
-    borderBottomWidth: 0.5,
+    borderBottomWidth:1,
     borderTopWidth: 0,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1)'
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'white'
   },
   nav: {
     backgroundColor: '#35BAF2',

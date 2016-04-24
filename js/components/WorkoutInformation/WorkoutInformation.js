@@ -18,6 +18,7 @@ import React, {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: G.grey,
   },
   content: {
     flex:1
@@ -34,11 +35,8 @@ var styles = StyleSheet.create({
   },
   count: {
     color: '#808080',
-    paddingRight: 8
+    width: 35,
   },
-  nav: {
-    backgroundColor: 'red'
-  }
 });
 
 

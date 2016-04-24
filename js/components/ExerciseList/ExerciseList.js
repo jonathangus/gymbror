@@ -5,6 +5,7 @@ import Swipeout from 'react-native-swipeout';
 import NavigationBar from 'react-native-navbar';
 import { deleteExercise } from '../../reducers/exercises';
 import Icon from 'react-native-vector-icons/Entypo';
+import G from '../../global';
 
 const {
   Component,
@@ -104,8 +105,8 @@ class ExerciseList extends Component {
         onOpen={(sectionID, rowID) => this._handleSwipeout(sectionID, rowID)}>
         <TouchableHighlight
           onPress={this._goToExercise.bind(this, rowData)}
-          style={styles.row}
-          underlayColor="#F3F5F9">
+          style={G.basicRow}
+          underlayColor={G.grey}>
           <Text style={styles.rowText}>{rowData.name}</Text>
         </TouchableHighlight>
       </Swipeout>
@@ -124,7 +125,7 @@ class ExerciseList extends Component {
       name="plus"
       size={30}
       backgroundColor="#FFF"
-      color='#35BAF2'
+      color={G.primary}
       ></Icon></TouchableHighlight>;
     return (
       <View style={styles.container}>

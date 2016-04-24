@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
+import { fetchWorkoutsIfNeeded, refreshWorkouts} from '../../reducers/workouts';
 import moment from 'moment';
 import NavigationBar from 'react-native-navbar';
 import _ from 'lodash'
@@ -13,19 +13,17 @@ import React, {
   Text,
   View,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from 'react-native';
 
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: G.grey
   },
   groupTitle: {
-    backgroundColor: G.grey,
-    padding: 15,
-    borderBottomWidth: 0.5,
-    borderTopWidth: 0.5,
-    borderColor: 'rgba(0, 0, 0, 0.1)'
+    padding: 10,
   },
 
 });
@@ -35,6 +33,11 @@ class WorkoutList extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(fetchWorkoutsIfNeeded());
+  }
+
+  _onRefresh() {
+    const { dispatch } = this.props;
+    dispatch(refreshWorkouts());
   }
 
   goToWorkout(workout) {
@@ -71,7 +74,7 @@ class WorkoutList extends Component {
     const groupedWorkouts = this.sortWorkouts(workouts.items);
     var _scrollView: ScrollView;
     return (
-      <View>
+      <View style={styles.container}>
         <NavigationBar
           title={{ title: 'Completed workouts' }}
           leftButton={{
@@ -83,6 +86,11 @@ class WorkoutList extends Component {
         <ScrollView
           ref={(scrollView) => { _scrollView = scrollView; }}
           scrollEventThrottle={200}
+          refreshControl={
+            <RefreshControl
+              refreshing={workouts.isFetching}
+              onRefresh={this._onRefresh.bind(this)}
+            />}
           showsVerticalScrollIndicator={true}>
             {groupedWorkouts.map((group, key) => {
               return <View key={key}>
