@@ -11,7 +11,8 @@ import React, {
   TouchableHighlight,
   StyleSheet,
   TextInput,
-  AlertIOS
+  AlertIOS,
+  ScrollView
 } from 'react-native';
 
 var styles = StyleSheet.create({
@@ -68,22 +69,29 @@ class WorkoutInformation extends Component {
               handler: () => {this.props.navigator.push({workoutList: 1})}
             }}/>
             <View style={styles.content}>
-            {workoutData.exerciseUnits ? workoutData.exerciseUnits.map((unit, i) => {
-              return (
-                <View key={i}>
-                  <Text style={styles.name}>{unit.exercise.name}</Text>
-                  {unit.sets.map((set, i) => {
+              <ScrollView
+                ref={(scrollView) => { _scrollView = scrollView; }}
+                scrollEventThrottle={200}
+                showsVerticalScrollIndicator={true}>
+                  {workoutData.exerciseUnits ? workoutData.exerciseUnits.map((unit, i) => {
                     return (
-                      <View key={i} style={[G.basicRow, styles.row]}>
-                        <Text style={[styles.rowItem, styles.count]}>{i}.</Text>
-                        <Text>{set.reps}</Text>
-                        <Text>{set.value ? ' x ' + set.value : ''}</Text>
-                      </View>
-                    )
-                  })}
-                </View>
-              )
-            }): null}
+                      <View key={i}>
+                        <View style={G.section}>
+                          <Text style={G.label}>{unit.exercise ? unit.exercise.name.toUpperCase() : 'Missing name'}</Text>
+                        </View>
+                        {unit.sets.map((set, i) => {
+                          return (
+                            <View key={i} style={[G.basicRow, styles.row]}>
+                              <Text style={[styles.rowItem, styles.count]}>{i}.</Text>
+                              <Text>{set.reps}</Text>
+                              <Text>{set.value ? ' x ' + set.value : ''}</Text>
+                            </View>
+                          )
+                        })}
+                  </View>
+                  )
+                }): null}
+              </ScrollView>
             </View>
           <View style={styles.remove}>
             <Button type={'danger'} onPress={this.removeWorkout.bind(this)}>Remove</Button>

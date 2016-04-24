@@ -5,6 +5,7 @@ import App from './components/App/App.js';
 
 export default class Root extends React.Component {
   constructor() {
+    console.disableYellowBox = true;
     super();
     this.state = {
       isLoading: true,

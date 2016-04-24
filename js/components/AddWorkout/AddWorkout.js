@@ -24,13 +24,13 @@ class AddWorkout extends Component {
   constructor(props) {
     super(props);
     const deviceHeight = Dimensions.get('window').height;
-
     this.state = {
       deviceHeight: deviceHeight,
       offSet: new Animated.Value(deviceHeight),
-      pickerOpen: false,
       date: new Date(this.props.workouts.currentDate),
-      timeZoneOffsetInHours:  (-1) * (new Date()).getTimezoneOffset() / 60
+      timeZoneOffsetInHours:  (-1) * (new Date()).getTimezoneOffset() / 60,
+      selectedChooseType: null,
+      selectedExercise: null
     }
   }
   removeSession(session) {
@@ -64,27 +64,77 @@ class AddWorkout extends Component {
     this.props.dispatch(setWorkoutDate(date));
     this.setState({date: date});
   }
-
-  openPicker() {
-    this.setState({pickerOpen: true});
-    Animated.timing(this.state.offSet, {
-      duration: 300,
-      toValue: 100
-    }).start()
+  
+  toggleChooser(type) {
+      if(!type || this.state.selectedChooseType == type) {
+        Animated.timing(this.state.offSet, {
+          duration: 300,
+          toValue: this.state.deviceHeight
+        }).start(() => {
+          this.setState({selectedChooseType: null})
+        })
+      }
+      else if(this.state.selectedChooseType) {
+        Animated.timing(this.state.offSet, {
+          duration: 300,
+          toValue: this.state.deviceHeight
+        }).start(() => {
+          this.setState({
+            selectedChooseType: type
+          });
+          Animated.timing(this.state.offSet, {
+            duration: 300,
+            toValue: 100
+          }).start()
+        })
+      }
+      else {
+        this.setState({
+          selectedChooseType: type
+        });
+        Animated.timing(this.state.offSet, {
+          duration: 300,
+          toValue: 100
+        }).start()
+      }
   }
 
-  closePicker() {
-    Animated.timing(this.state.offSet, {
-      duration: 300,
-      toValue: this.state.deviceHeight
-    }).start(() => {
-      this.setState({pickerOpen: false})
-    })
+  selectExercise() {
+    const { exercises, workouts, navigator } = this.props;
+    let exerciseId;
+    if(this.state.selectedExercise) {
+      exerciseId = this.state.selectedExercise.value;
+    }
+    else {
+      const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'exerciseId': ex._id}));
+      exerciseId = trimmedExercises[0]._id;
+    }
+
+    const selectedExercise = _.find(exercises.exercisesFromUser, {'_id': exerciseId});
+    navigator.push({AddExerciseSession: 1, selectedExercise: selectedExercise});
   }
 
   render() {
     const exitIcon = <Back onPress={() => this.props.navigator.push({})} />
-    const { workouts } = this.props;
+    const { workouts, exercises } = this.props;
+    const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'exerciseId': ex._id}));
+    const exerciseOptions = trimmedExercises.map((ex, key) => {
+      return <Picker.Item key={key} label={ex.name} value={ex._id} />;
+    });
+
+    const datepicker = <View style={styles.picker}>
+      <View style={styles.pickerTop}>
+        <Text style={styles.pickerTopText} onPress={() => this.toggleChooser()}>
+          Done
+        </Text>
+      </View>
+      <DatePickerIOS
+        date={this.state.date}
+        mode="datetime"
+        maximumDate={new Date()}
+        timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+        onDateChange={this.onDateChange.bind(this)} />
+    </View>;
 
     return (
       <View style={styles.container}>
@@ -118,7 +168,7 @@ class AddWorkout extends Component {
         <TouchableHighlight
           style={styles.row}
           underlayColor={G.primary}
-          onPress={() => this.props.navigator.push({AddExerciseSession: 1})}>
+          onPress={() => {this.toggleChooser('exercises')}}>
           <View style={styles.addExercise}>
             <Icon
               name="plus"
@@ -137,24 +187,33 @@ class AddWorkout extends Component {
         <TouchableHighlight
           style={styles.row}
           underlayColor={G.primary}
-          onPress={() => this.state.pickerOpen ? this.closePicker() : this.openPicker()}>
+          onPress={() => this.toggleChooser('datePicker')}>
           <View style={styles.addExercise}>
             <Text>{moment(this.state.date).format('D MMM. YYYY, HH:mm').toLowerCase()}</Text>
           </View>
         </TouchableHighlight>
 
-        {this.state.pickerOpen ?
-          <Animated.View style={{ transform: [{translateY:this.state.offSet}] }}>
-            <View style={styles.pickerTop}>
-              <Text style={styles.pickerTopText} onPress={this.closePicker.bind(this)}>Done</Text>
-            </View>
-            <DatePickerIOS
-            date={this.state.date}
-            mode="datetime"
-            maximumDate={new Date()}
-            timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-            onDateChange={this.onDateChange.bind(this)} />
-        </Animated.View>
+        {this.state.selectedChooseType ?
+          <Animated.View style={[styles.chooseWrap, { transform: [{translateY:this.state.offSet}] }]}>
+            {this.state.selectedChooseType == 'datePicker' ? datepicker :
+              <View style={styles.picker}>
+                <View style={styles.pickerTop}>
+                  <Text style={styles.pickerTopText} onPress={this.selectExercise.bind(this)}>
+                    Select
+                  </Text>
+                </View>
+                <Picker
+                  selectedValue={this.state.selectedExercise ? this.state.selectedExercise.value : null}
+                  onValueChange={(exercise, index) => this.setState({
+                    selectedExercise: {
+                      name: trimmedExercises[index].name,
+                      value: exercise
+                    }
+                  })}>
+                  {exerciseOptions}
+                </Picker>
+              </View>}
+          </Animated.View>
         : null}
       </View>
     );

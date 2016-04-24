@@ -1,4 +1,7 @@
-import Icon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import G from '../../global';
+import Button from '../Button/Button';
+import FloatLabelTextInput from 'react-native-floating-label-text-input';
 
 import React, {
   Component,
@@ -13,6 +16,7 @@ import React, {
 export default class Reps extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.intialRows);
     this.state = {
       rows: this.props.intialRows
     }
@@ -61,38 +65,49 @@ export default class Reps extends Component {
       <View style={styles.container}>
         {this.state.rows.map((r, index) => {
           return (
-            <View key={index} style={styles.row}>
+          <View key={index} style={styles.row}>
+              <Text style={styles.rowCount}>{(index + 1) + '.'}</Text>
               <View style={styles.rowItem}>
-                <Text>Reps:</Text><TextInput
-                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                  onChangeText={this.changeText.bind(this, index, 'reps')}
-                  value={this.state.rows[index].reps.toString()}
+                <FloatLabelTextInput
+                  placeHolder={'Reps'}
+                  noBorder={true}
+                  value={this.state.rows[index] ? this.state.rows[index].reps.toString() : null}
+                  onChangeTextValue={this.changeText.bind(this, index, 'reps')}
                 />
               </View>
+              <Text>x</Text>
               <View style={styles.rowItem}>
-                <Text>Värde:</Text><TextInput
-                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                  onChangeText={this.changeText.bind(this, index, 'value')}
-                  value={this.state.rows[index].value.toString()}
+                <FloatLabelTextInput
+                  placeHolder={'Value'}
+                  noBorder={true}
+                  value={this.state.rows[index] ? this.state.rows[index].value.toString() : null}
+                  onChangeTextValue={this.changeText.bind(this, index, 'value')}
                 />
             </View>
 
-              <TouchableHighlight style={styles.closeButton} onPress={this.removeRow.bind(this, index)}><Icon
-                name="cross"
-                size={30}
+              <Icon
+                onPress={this.removeRow.bind(this, index)}
+                style={styles.removeRow}
+                name="close"
+                size={20}
                 backgroundColor="#FFF"
                 color='#222222'
-              ></Icon></TouchableHighlight>
+              />
             </View>
           )
         })}
-        <TouchableHighlight style={styles.button} onPress={this.addRow.bind(this)}>
-          <Text>Add row</Text>
-        </TouchableHighlight>
 
-        <TouchableHighlight style={styles.button} onPress={this.complete.bind(this)}>
-          <Text>Complete</Text>
-        </TouchableHighlight>
+        <View style={G.section}>
+          <Button onPress={this.addRow.bind(this)}>
+            Add row
+          </Button>
+        </View>
+
+        <View style={G.section}>
+          <Button onPress={this.complete.bind(this)}>
+            Complete
+          </Button>
+        </View>
       </View>
     );
   }
@@ -110,19 +125,31 @@ var styles = StyleSheet.create({
     marginTop: 30
   },
   row: {
-    padding: 10,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    marginLeft: 10,
+    marginRight: 10,
+    borderBottomWidth:1,
+    borderTopWidth: 0,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'white',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   rowItem: {
     flex: 1,
-    paddingRight: 10
+    paddingRight: 10,
+    justifyContent: 'center'
   },
   button: {
     padding: 15
   },
+  rowCount: {
+    flex: 0,
+    color: '#808080',
+    width: 15,
+  },
   removeRow: {
+    justifyContent: 'center',
     alignItems: 'flex-end'
   }
 });

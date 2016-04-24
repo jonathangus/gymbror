@@ -44,6 +44,13 @@ export default StyleSheet.create({
   },
   pickerTopText: {
     color: 'white',
+  },
+  chooseWrap: {
+    flex: 1,
+  },
+  picker: {
+    flex: 1,
+    justifyContent: 'flex-start',
   }
 
 });

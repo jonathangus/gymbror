@@ -48,7 +48,8 @@ export default function workouts(state = initialState, action) {
     case WORKOUT_CREATED:
       return {
         ...state,
-        currentSessions: []
+        currentSessions: [],
+        currentDate: new Date()
       }
 
     case SET_WORKOUT_DATE:

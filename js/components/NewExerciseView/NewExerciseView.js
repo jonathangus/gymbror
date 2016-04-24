@@ -3,6 +3,9 @@ import { createExercise } from '../../reducers/exercises';
 import { MessageBarManager } from 'react-native-message-bar';
 import NavigationBar from 'react-native-navbar';
 import Back from '../Back/Back';
+import Button from '../Button/Button';
+import G from '../../global';
+import FloatLabelTextInput from 'react-native-floating-label-text-input';
 
 import React, {
   Component,
@@ -43,7 +46,7 @@ class NewExerciseView extends Component {
   }
 
   render() {
-    const leftButton = <Back onPress={this.props.navigator.push({exerciseList: 1})} />;
+    const leftButton = <Back onPress={() => this.props.navigator.push({exerciseList: 1})} />;
     const suggestions = this.state.suggestions.map((s, i) => {
       return <TouchableHighlight
         key={i}
@@ -56,15 +59,19 @@ class NewExerciseView extends Component {
         <NavigationBar
           title={{ title: 'Add new exercise' }}
           leftButton={leftButton}/>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={this.onChange.bind(this)}
-          value={this.state.name}
-        />
+        <View style={styles.textInput}>
+          <FloatLabelTextInput
+            placeHolder={'Exercise name'}
+            noBorder={true}
+            value={this.state.name}
+            onChangeTextValue={this.onChange.bind(this)}
+           />
+        </View>
         {suggestions}
-        <TouchableHighlight style={styles.save} onPress={this._saveExercise.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableHighlight>
+
+        <View style={G.section}>
+          <Button onPress={this._saveExercise.bind(this)}>Save</Button>
+        </View>
       </View>
     );
   }
@@ -86,5 +93,8 @@ var styles = StyleSheet.create({
   },
   save: {
     marginTop: 30
+  },
+  textInput: {
+    height: 60
   }
 });

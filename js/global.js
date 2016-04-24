@@ -24,6 +24,9 @@ export default {
     paddingBottom:4,
     paddingTop: 10,
     paddingLeft: 10
+  },
+  section: {
+    marginTop: 15
   }
 
 };

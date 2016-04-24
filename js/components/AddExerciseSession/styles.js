@@ -13,5 +13,5 @@ export default StyleSheet.create({
     borderBottomWidth: 0.5,
     borderTopWidth: 0,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)'
-  }
+  },
 });
