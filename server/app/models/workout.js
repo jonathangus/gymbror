@@ -1,6 +1,6 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
-var ExercuseUnit = require('./exercise_unit');
+var ExerciseUnit = require('./exercise_unit');
 
 var WorkoutSchema  = new Schema({
   userId: '',
@@ -13,11 +13,9 @@ var WorkoutSchema  = new Schema({
 
 WorkoutSchema.pre('remove', function(next) {
   this.exerciseUnits.forEach(function(unit) {
-    if(unit._id) {
-      ExercuseUnit.remove({
-        _id: unit._id
+      ExerciseUnit.remove({
+        _id: unit
       });
-    }
   });
   next();
 });

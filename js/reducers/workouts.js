@@ -11,6 +11,7 @@ const REMOVE_EXERCISE_SESSION = 'REMOVE_EXERCISE_SESSION';
 const WORKOUT_CREATED = 'WORKOUT_CREATED';
 const DELETE_WORKOUT = 'DELETE_WORKOUT';
 const SET_WORKOUT_DATE = 'SET_WORKOUT_DATE';
+const REQUEST_COMPLETE = 'REQUEST_COMPLETE';
 
 const initialState = {
   items: [],
@@ -26,6 +27,12 @@ export default function workouts(state = initialState, action) {
         isFetching: false,
         items: action.workouts,
       });
+
+    case REQUEST_COMPLETE:
+      return {
+        ...state,
+        isFetching: false
+      }
 
     case REQUEST_WORKOUTS:
       return Object.assign({}, state, {
@@ -95,7 +102,8 @@ export function refreshWorkouts() {
           type: RECIVED_WORKOUTS,
           workouts: response
         });
-      });
+      })
+      .catch(() => dispatch({type: REQUEST_COMPLETE}))
   }
 }
 
@@ -109,7 +117,8 @@ function fetchWorkouts() {
           type: RECIVED_WORKOUTS,
           workouts: response
         });
-      });
+      })
+      .catch(() => dispatch({type: REQUEST_COMPLETE}));
   }
 }
 

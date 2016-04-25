@@ -1,4 +1,6 @@
-const API_PATH = 'http://localhost:8080/api/v1/';
+const HOST = __DEV__ ? 'http://localhost:8080': 'http://192.168.20.184:8080';
+const API_PATH = HOST + '/api/v1/';
+
 
 /**
  * Workouts
@@ -31,6 +33,7 @@ export function removeWorkout(workoutId) {
   };
   return fetch(API_PATH + 'delete_workout/' + workoutId, postData);
 }
+
 
 /**
  * Exercises
