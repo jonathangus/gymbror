@@ -1,4 +1,5 @@
-const HOST = __DEV__ ? 'http://localhost:8080': 'http://192.168.20.184:8080';
+const HOST = __DEV__ ? 'http://localhost:8080': 'http://192.168.0.17:8080';
+//const HOST = 'http://192.168.0.17:8080';
 const API_PATH = HOST + '/api/v1/';
 
 

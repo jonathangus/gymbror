@@ -6,6 +6,7 @@ import NavigationBar from 'react-native-navbar';
 import { deleteExercise } from '../../reducers/exercises';
 import Icon from 'react-native-vector-icons/Entypo';
 import G from '../../global';
+import Back from '../Back/Back';
 
 const {
   Component,
@@ -113,25 +114,22 @@ class ExerciseList extends Component {
     )
   }
 
-  leftButtonConfig() {
-    return {
-      title: 'Back',
-      handler: () => this.props.navigator.push({})
-    };
-  }
-
   render() {
-    const rightButtonAdd = <TouchableHighlight style={styles.addButton} onPress={() => this.props.navigator.push({newExercise: 1})}><Icon
-      name="plus"
-      size={30}
-      backgroundColor="#FFF"
-      color={G.primary}
-      ></Icon></TouchableHighlight>;
+    const rightButtonAdd = <TouchableHighlight
+      underlayColor={G.grey}
+      style={styles.addButton}
+      onPress={() => this.props.navigator.push({newExercise: 1})}>
+        <Icon
+        name="plus"
+        size={30}
+        backgroundColor="#FFF"
+        color={G.black}/>
+    </TouchableHighlight>;
     return (
       <View style={styles.container}>
         <NavigationBar
           title={{ title: 'Exercises' }}
-          leftButton={this.leftButtonConfig()}
+          leftButton={<Back onPress={() => this.props.navigator.push({})}/>}
           rightButton={rightButtonAdd}/>
         <ListView
           dataSource={this.state.dataSource}

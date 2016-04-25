@@ -40,18 +40,7 @@ class AddWorkout extends Component {
       this.state.rows = defaultValues;
     }
     else {
-      const newSort = _.sortBy(selectedExercise.sessions, (value) => new Date(value.date));
-
-      let found = false;
-      for(var i = newSort.length -1; i !== 0; i--) {
-        if(typeof newSort[i][0] == 'object') {
-          this.state.rows = newSort[i][0].reps;
-          found = true;
-        }
-      }
-      if(!found) {
-        this.state.rows = defaultValues;
-      }
+      this.state.rows = selectedExercise.sessions[0].sets;
     }
   }
 
