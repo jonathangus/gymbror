@@ -1,7 +1,6 @@
 import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
 import Button from '../Button/Button';
-import FloatLabelTextInput from 'react-native-floating-label-text-input';
 
 import React, {
   Component,
@@ -16,7 +15,6 @@ import React, {
 export default class Reps extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.intialRows);
     this.state = {
       rows: this.props.intialRows
     }
@@ -30,19 +28,22 @@ export default class Reps extends Component {
 
   addRow() {
     let { rows } = this.state;
+    const newRow = Object.assign({}, rows[rows.length - 1]);
+
     this.setState({
-      rows: [...rows, rows[rows.length - 1]]
+      rows: [...rows, newRow]
+    }, () => {
+      this.refs['reps-' + (this.state.rows.length - 1)].focus();
     });
   }
 
   removeRow(index) {
     const { rows } = this.state;
-    if(rows.length > 1) {
+    const uno = Object.assign([], rows);
+    const newRows = Object.assign([], uno.filter((_, i) => i !== index));
+    if(newRows.length > 0) {
       this.setState({
-        rows: [
-          ...rows.slice(0, index),
-          ...rows.slice(index + 1)
-        ]
+        rows: newRows
       });
     }
   }
@@ -60,6 +61,13 @@ export default class Reps extends Component {
     this.props.onComplete(rows);
   }
 
+  tabNext(index, target) {
+    const { rows } = this.state;
+    if(rows[index]) {
+      this.refs[target + '-' + index].focus();
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -68,20 +76,22 @@ export default class Reps extends Component {
           <View key={index} style={styles.row}>
               <Text style={styles.rowCount}>{(index + 1) + '.'}</Text>
               <View style={styles.rowItem}>
-                <FloatLabelTextInput
-                  placeHolder={'Reps'}
-                  noBorder={true}
+                <TextInput
+                  ref={'reps-' + index}
+                  style={[styles.inputStyle, styles.firstInput]}
+                  onChangeText={this.changeText.bind(this, index, 'reps')}
                   value={this.state.rows[index] ? this.state.rows[index].reps.toString() : null}
-                  onChangeTextValue={this.changeText.bind(this, index, 'reps')}
+                  onSubmitEditing={() => this.tabNext(index, 'value')}
                 />
               </View>
-              <Text>x</Text>
+              <Text style={styles.times}>x</Text>
               <View style={styles.rowItem}>
-                <FloatLabelTextInput
-                  placeHolder={'Value'}
-                  noBorder={true}
+                <TextInput
+                  ref={'value-' + index}
+                  style={styles.inputStyle}
+                  onChangeText={this.changeText.bind(this, index, 'value')}
                   value={this.state.rows[index] ? this.state.rows[index].value.toString() : null}
-                  onChangeTextValue={this.changeText.bind(this, index, 'value')}
+                  onSubmitEditing={() => this.tabNext(index + 1, 'reps')}
                 />
             </View>
 
@@ -132,13 +142,14 @@ var styles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: 'white',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center'
   },
   rowItem: {
     flex: 1,
-    paddingRight: 10,
-    justifyContent: 'center'
+    //paddingRight: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     padding: 15
@@ -151,5 +162,14 @@ var styles = StyleSheet.create({
   removeRow: {
     justifyContent: 'center',
     alignItems: 'flex-end'
+  },
+  inputStyle: {
+    height: 35,
+  },
+  firstInput: {
+    textAlign: 'right'
+  },
+  times: {
+    padding: 10,
   }
 });

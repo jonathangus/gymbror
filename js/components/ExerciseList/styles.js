@@ -10,14 +10,7 @@ export default StyleSheet.create({
     padding: 10
   },
   row: {
-    flex:1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    padding: 30,
-    borderBottomWidth: 0.5,
-    borderTopWidth: 0,
-    borderBottomColor: 'rgba(0, 0, 0, 0.1)'
+    padding: 20,
   },
   addItemsText: {
     marginTop: 100

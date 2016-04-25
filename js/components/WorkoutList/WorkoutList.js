@@ -57,17 +57,12 @@ class WorkoutList extends Component {
         groupItem = {};
         groupItem.title = moment(wo.date).format('MMMM') + ' - ' + moment(wo.date).format('YYYY');
         groupItem.items = [];
+        groupItem.timestamp = d.getTime();
       }
       groupItem.items = [...groupItem.items, wo];
       groupedWorkouts[year + month] = groupItem;
     });
-
-    const keys = Object.keys(groupedWorkouts).sort((a, b) => parseInt(a) < parseInt(a));
-    let finalItems = [];
-    for(var prop in keys) {
-      finalItems.push(groupedWorkouts[keys[prop]]);
-    }
-    return finalItems;
+    return _.sortBy(groupedWorkouts, 'timestamp').reverse();
   }
 
   render() {
@@ -78,10 +73,8 @@ class WorkoutList extends Component {
       <View style={styles.container}>
         <NavigationBar
           title={{ title: 'Completed workouts' }}
-          leftButton={{
-              title: 'Back',
-              handler: () => {this.props.navigator.push({})}
-            }}/>
+          leftButton={<Back  onPress={() => this.props.navigator.push({})} />
+          }/>
         {groupedWorkouts.length == 0 ?
           <Button onPress={() => {this.props.navigator.push({addWorkout: 1})}}>You dont have any exercises, create one?</Button>: null}
         <ScrollView

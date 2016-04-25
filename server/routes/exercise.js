@@ -10,7 +10,10 @@ module.exports = function(router) {
         .find({userId: req.params.user_id}, function(err, exercises) {
           // Map the docs into an array of just the _ids
           var ids = exercises.map(function(ex) { return ex._id; });
-          ExerciseSession.find({exercise: {$in: ids}}, function(err, sessions){
+          ExerciseSession
+            .find({exercise: {$in: ids}})
+            .sort({date: -1})
+            .exec(function(err, sessions){
             if(err) {
               res.send(err);
             }
@@ -18,6 +21,7 @@ module.exports = function(router) {
               ex.sessions = sessions.filter(function(sess) {
                 return sess.exercise.toString() == ex._id.toString();
               });
+
             });
             res.json(exercises);
           });

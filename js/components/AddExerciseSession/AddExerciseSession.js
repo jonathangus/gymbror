@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import _ from 'lodash';
 import Reps from '../Reps/Reps';
 import { addExerciseSession } from '../../reducers/workouts';
+import Back from '../Back/Back';
 
 import React, {
   Component,
@@ -62,12 +63,7 @@ class AddWorkout extends Component {
   }
   
   render() {
-    const exitIcon = <TouchableHighlight style={styles.closeButton} onPress={() => this.props.navigator.push({addWorkout: 1})}><Icon
-      name="cross"
-      size={30}
-      backgroundColor="#FFF"
-      color='#35BAF2'
-    ></Icon></TouchableHighlight>;
+    const exitIcon = <Back onPress={() => this.props.navigator.push({addWorkout: 1})} />;
     return (
       <View style={styles.container}>
         <NavigationBar

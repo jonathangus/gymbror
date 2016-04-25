@@ -4,6 +4,7 @@ import { logoutUser } from '../../reducers/user';
 import AddWorkout from '../AddWorkout/AddWorkout';
 import styles from './styles';
 import NavigationBar from 'react-native-navbar';
+import G from '../../global';
 
 import React, {
   Component,
@@ -44,15 +45,15 @@ class Landing extends Component {
         />
 
         <View style={styles.actions}>
-          <TouchableHighlight underlayColor="#F3F5F9"  style={styles.action} onPress={() => this.props.navigator.push({workoutList: 1})}>
+          <TouchableHighlight underlayColor="#F3F5F9"  style={G.basicRow} onPress={() => this.props.navigator.push({workoutList: 1})}>
             <Text>Completed Workouts</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight underlayColor="#F3F5F9" style={styles.action} onPress={this._exerciseListView.bind(this)}>
+          <TouchableHighlight underlayColor="#F3F5F9" style={G.basicRow} onPress={this._exerciseListView.bind(this)}>
             <Text>Exercises</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight underlayColor="#F3F5F9"  style={styles.action} onPress={() => this.props.navigator.push({addWorkout: 1})}>
+          <TouchableHighlight underlayColor="#F3F5F9"  style={G.basicRow} onPress={() => this.props.navigator.push({addWorkout: 1})}>
             <Text>Add workout</Text>
           </TouchableHighlight>
         </View>
