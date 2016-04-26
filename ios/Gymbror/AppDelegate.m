@@ -80,6 +80,11 @@
                                                       moduleName:@"Gymbror"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
+                                                   
+  NSArray *objects = [[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil];
+  UIImageView *loadingView = [[[objects objectAtIndex:0] subviews] objectAtIndex:0];
+  loadingView = [[UIImageView alloc] initWithImage:[loadingView image]];
+  loadingView.frame = [UIScreen mainScreen].bounds;
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
