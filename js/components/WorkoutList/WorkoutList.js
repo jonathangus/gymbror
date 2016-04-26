@@ -31,11 +31,6 @@ var styles = StyleSheet.create({
 
 class WorkoutList extends Component {
 
-  componentWillMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchWorkoutsIfNeeded());
-  }
-
   _onRefresh() {
     const { dispatch } = this.props;
     dispatch(refreshWorkouts());

@@ -7,6 +7,9 @@ import { FBLoginManager } from 'NativeModules';
 import { MessageBar, MessageBarManager } from 'react-native-message-bar';
 import { testServer } from '../../api';
 import { errorMessage } from '../../error_handling';
+import AppState from 'AppState';
+import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
+import CodePush from 'react-native-code-push';
 
 import React, {
   Component,
@@ -16,10 +19,17 @@ import React, {
 
 class App extends Component {
   componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange);
+
+    // Sync our code
+    CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE});
+
     const { dispatch, user } = this.props;
+
     // Load exercises
     if(user.isLoggedIn) {
       dispatch(loadExercisesByUser());
+      dispatch(fetchWorkoutsIfNeeded());
     }
 
     // Test server
@@ -35,6 +45,12 @@ class App extends Component {
 
     // Take care of messages
     MessageBarManager.registerMessageBar(this.refs.alert);
+  }
+
+  handleAppStateChange(appState) {
+    if (appState === 'active') {
+      CodePush.sync({installMode: CodePush.InstallMode.ON_NEXT_RESUME});
+    }
   }
 
   componentWillUnmount() {

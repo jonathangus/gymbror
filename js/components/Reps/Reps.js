@@ -82,6 +82,7 @@ export default class Reps extends Component {
                   onChangeText={this.changeText.bind(this, index, 'reps')}
                   value={this.state.rows[index] ? this.state.rows[index].reps.toString() : null}
                   onSubmitEditing={() => this.tabNext(index, 'value')}
+                  keyboardType={'numeric'}
                 />
               </View>
               <Text style={styles.times}>x</Text>
@@ -92,6 +93,7 @@ export default class Reps extends Component {
                   onChangeText={this.changeText.bind(this, index, 'value')}
                   value={this.state.rows[index] ? this.state.rows[index].value.toString() : null}
                   onSubmitEditing={() => this.tabNext(index + 1, 'reps')}
+                  keyboardType={'numeric'}
                 />
             </View>
 

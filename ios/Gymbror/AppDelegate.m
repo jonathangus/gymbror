@@ -12,6 +12,7 @@
 #import "RCTRootView.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "CodePush.h"
 
 @implementation AppDelegate
 
@@ -35,7 +36,21 @@
                            didFinishLaunchingWithOptions:launchOptions];
   
   NSURL *jsCodeLocation;
-
+  #ifdef DEBUG
+    // run with Scheme "GeoEncoding DEBUG" to load jscode from Packager and be able to debug in Chrome
+    // set dev=false to enable optimisation/minifying process.
+    // Change localhost to be your own machines ip address for running on device with debugging in Chrome
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  #elif RUN_DEVICE
+    // run with scheme "GeoEncoding RUN_DEVICE" to bundle jscode with app and bypass CodePush.
+    // Use this for running your own jscode changes that haven't been pushed to CodePush
+    jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  #else
+    // run with Scheme "GeoEncoding RELEASE" to load jscode from optimised/minified jsbundle on disk (performed by CodePush)
+    // under this mode, jsbundle on disk is generated during "Bundle React Native code and images" build phase
+    // and you will LOSE the ability to debug in Chrome
+    jsCodeLocation = [CodePush bundleURL];
+  #endif
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
@@ -49,9 +64,7 @@
    * `inet` value under `en0:`) and make sure your computer and iOS device are
    * on the same Wi-Fi network.
    */
-
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  //jsCodeLocation = [NSURL URLWithString:@"http://192.168.0.17:8081/index.ios.bundle?platform=ios&dev=true"];
+  //jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
 
   /**
    * OPTION 2
@@ -61,7 +74,7 @@
    * simulator in the "Release" build configuration.
    */
 
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+   //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"Gymbror"

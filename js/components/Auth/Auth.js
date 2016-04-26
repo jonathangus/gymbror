@@ -1,6 +1,5 @@
 import React from 'react-native';
 import Video from 'react-native-video';
-import LinearGradient from 'react-native-linear-gradient';
 import FBLogin from 'react-native-facebook-login';
 import { FBLoginManager } from 'NativeModules';
 import { connect } from 'react-redux';
