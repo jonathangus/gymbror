@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "mongo": "mongod --dbpath='server/data/db'",
-    "server": "node server/server.js"
+    "server": "node server/server.js",
+    "deploy": "react-native bundle --platform ios --entry-file index.ios.js --bundle-output ./release/main.jsbundle --assets-dest ./release --dev false && code-push release Gymbror ./release 1.0.0 --deploymentName Production --mandatory"
   },
   "dependencies": {
     "lodash": "^4.11.1",
@@ -14,7 +15,6 @@
     "react-native": "^0.24.1",
     "react-native-code-push": "^1.10.4-beta",
     "react-native-facebook-login": "^1.0.3",
-    "react-native-floating-label-text-input": "0.0.8",
     "react-native-message-bar": "^1.5.0",
     "react-native-navbar": "^1.4.2",
     "react-native-redux-router": "^1.0.6",

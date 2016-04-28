@@ -17,6 +17,7 @@ class Auth extends Component {
   }
 
   onLogin(data) {
+    console.log(data);
     const { dispatch } = this.props;
     dispatch(setUser(data.credentials));
   }

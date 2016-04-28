@@ -1,6 +1,6 @@
-//const HOST = __DEV__ ? 'http://localhost:8080': 'http://192.168.0.17:8080';
-//const HOST = 'http://192.168.0.17:8080';
-const HOST = 'http://192.168.20.184:8080';
+const HOST = __DEV__ ? 'http://localhost:8080': 'http://10.0.1.164:8080';
+//const HOST = 'http://10.0.1.164:8080';
+// const HOST = 'http://192.168.20.184:8080';
 const API_PATH = HOST + '/api/v1/';
 
 
@@ -14,7 +14,8 @@ export function createWorkout(workoutData) {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Origin': '',
-      'Host': 'http://localhost:8080'
+      'Host': 'http://localhost:8080',
+      'timeout': 15000
     },
     body: JSON.stringify(workoutData)
   }
@@ -24,7 +25,8 @@ export function createWorkout(workoutData) {
 export function reciveWorkouts(userId) {
   let postData = {
     'method': 'GET',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'workouts/' + userId, postData);
 }
@@ -32,6 +34,7 @@ export function reciveWorkouts(userId) {
 export function removeWorkout(workoutId) {
   let postData = {
     'method': 'DELETE',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'delete_workout/' + workoutId, postData);
 }
@@ -43,6 +46,7 @@ export function removeWorkout(workoutId) {
 export function removeExercise(id) {
   let postData = {
     'method': 'DELETE',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'delete_exercise/' + id, postData);
 }
@@ -50,22 +54,25 @@ export function removeExercise(id) {
 export function loadExercises(userId) {
   const postData = {
     'method': 'GET',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'exercises/' + userId, postData);
 }
 
-export function newExercise(exerciseName, userId) {
+export function newExercise(exerciseName,exerciseType, userId) {
   const postData = {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Origin': '',
-      'Host': 'http://localhost:8080'
+      'Host': 'http://localhost:8080',
+      'timeout': 15000
     },
     body: JSON.stringify({
       name: exerciseName,
+      type: exerciseType,
       userId: userId
     })
   }
@@ -75,7 +82,8 @@ export function newExercise(exerciseName, userId) {
 export function getDetailedInformation(exerciseId) {
   const postData = {
     'method': 'GET',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'exercise/' + exerciseId, postData);
 }
@@ -84,7 +92,8 @@ export function getDetailedInformation(exerciseId) {
 export function testServer() {
   const postData = {
     'method': 'GET',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'timeout': 15000
   };
   return fetch(API_PATH + 'server_status/', postData);
 }

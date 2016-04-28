@@ -80,17 +80,20 @@
                                                       moduleName:@"Gymbror"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
-                                                   
-  NSArray *objects = [[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:self options:nil];
-  UIImageView *loadingView = [[[objects objectAtIndex:0] subviews] objectAtIndex:0];
-  loadingView = [[UIImageView alloc] initWithImage:[loadingView image]];
-  loadingView.frame = [UIScreen mainScreen].bounds;
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  
+  UIImageView *launchScreenView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage"]];
+  launchScreenView.frame = self.window.bounds;
+  launchScreenView.contentMode = UIViewContentModeScaleAspectFill;
+  rootView.loadingView = launchScreenView;
+  rootView.loadingViewFadeDelay = 1000;
+  
   return YES;
 }
 

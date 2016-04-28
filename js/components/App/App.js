@@ -6,7 +6,7 @@ import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 import { FBLoginManager } from 'NativeModules';
 import { MessageBar, MessageBarManager } from 'react-native-message-bar';
 import { testServer } from '../../api';
-import { errorMessage } from '../../error_handling';
+import { errorMessage, success } from '../../error_handling';
 import AppState from 'AppState';
 import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
 import CodePush from 'react-native-code-push';
@@ -22,7 +22,7 @@ class App extends Component {
     AppState.addEventListener('change', this.handleAppStateChange);
 
     // Sync our code
-    CodePush.sync({ updateDialog: true, installMode: CodePush.InstallMode.IMMEDIATE});
+    CodePush.sync({ installMode: CodePush.InstallMode.IMMEDIATE});
 
     const { dispatch, user } = this.props;
 
@@ -33,7 +33,9 @@ class App extends Component {
     }
 
     // Test server
-    testServer().catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
+    testServer()
+    .then(() => success('Server is working'))
+    .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
 
     // Each time the user is logged in lets update its exercise list
     RCTDeviceEventEmitter.addListener(
@@ -49,7 +51,10 @@ class App extends Component {
 
   handleAppStateChange(appState) {
     if (appState === 'active') {
-      CodePush.sync({installMode: CodePush.InstallMode.ON_NEXT_RESUME});
+      CodePush.sync({installMode: CodePush.InstallMode.IMMEDIATE});
+      testServer()
+      .then(() => success('Server is working'))
+      .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
     }
   }
 

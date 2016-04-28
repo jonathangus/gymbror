@@ -5,7 +5,7 @@ import { errorMessage, defaultError } from '../error_handling';
 const initialState = {
   exercisesFromUser: [],
   suggestedExercises: [
-    'Bänk', 'Böj', 'Marklyft'
+    'Bench', 'Squats', 'Deadlifts', 'Overhead press', 'Dips', 'Wheigted dips', 'Barbell row'
   ],
   loadedExercises: {},
   isLoading: false,
@@ -104,11 +104,11 @@ export function deleteExercise(exercise) {
   };
 }
 
-export function createExercise(exerciseName) {
+export function createExercise(exerciseName, exerciseType) {
   return(dispatch, getState) => {
     const { user } = getState();
 
-    newExercise(exerciseName, user.data.userId)
+    newExercise(exerciseName, exerciseType, user.data.userId)
       .then(() => {
         dispatch(loadExercisesByUser());
         MessageBarManager.showAlert({

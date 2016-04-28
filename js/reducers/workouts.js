@@ -17,7 +17,8 @@ const initialState = {
   items: [],
   isFetching: false,
   currentSessions: [],
-  currentDate: new Date()
+  currentDate: new Date(),
+  localItems: []
 };
 
 export default function workouts(state = initialState, action) {
@@ -154,6 +155,7 @@ export function removeExerciseSession(session) {
 
 export function createNewWorkout(workoutData) {
   return (dispatch) => {
+    console.log(workoutData);
     createWorkout(workoutData)
       .then((response) => response.json())
       .then((response) => {
