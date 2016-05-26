@@ -1,14 +1,7 @@
+# Gymbror application - React/Redux
+
+A application for tracking gym progress. Built in React Native and using Redux.
 
 ```
 npm install
-```
-Run these from project root in diffrent terminals
-```
-npm run server
-```
-```
-npm run mongo
-```
-```
-react-native run-ios
 ```
