@@ -16,9 +16,16 @@ const LOAD_EXERCISES_BY_USER = 'LOAD_EXERCISES_BY_USER';
 const LOAD_DETAILED_EXERCISE = 'LOAD_DETAILED_EXERCISE';
 const EXERCISE_LOADING_COMPLETE = 'EXERCISE_LOADING_COMPLETE';
 const SET_DETAILED_EXERCISE = 'SET_DETAILED_EXERCISE';
+export const NEW_EXERCISE = 'NEW_EXERCISE';
 
 export default function exercises(state = initialState, action) {
   switch(action.type) {
+
+    case NEW_EXERCISE:
+      return {
+        ...state,
+        exercisesFromUser: [...state.exercisesFromUser, action.newExercise]
+      }
 
     case LOAD_EXERCISES_BY_USER:
       return {
@@ -104,19 +111,36 @@ export function deleteExercise(exercise) {
   };
 }
 
+
+
 export function createExercise(exerciseName, exerciseType) {
   return(dispatch, getState) => {
     const { user } = getState();
 
-    newExercise(exerciseName, exerciseType, user.data.userId)
-      .then(() => {
-        dispatch(loadExercisesByUser());
-        MessageBarManager.showAlert({
-          title: 'Exercise have been created',
-          alertType: 'success',
-        });
-      })
-      .catch(() => errorMessage('Exercise could not be created'));
+    // add to exerices list
+    const newExercise = {
+      name: exerciseName,
+      type: exerciseType,
+      userId: user.data.userId,
+      _id: '123abc',
+      sessions: [],
+      isSynced: false
+    };
+
+    dispatch({
+      type: NEW_EXERCISE,
+      newExercise: newExercise
+    });
+
+    //newExercise(exerciseName, exerciseType, user.data.userId)
+    //  .then(() => {
+    //    dispatch(loadExercisesByUser());
+    //    MessageBarManager.showAlert({
+    //      title: 'Exercise have been created',
+    //      alertType: 'success',
+    //    });
+    //  })
+    //  .catch(() => errorMessage('Exercise could not be created'));
   }
 }
 

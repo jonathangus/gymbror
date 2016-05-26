@@ -6,6 +6,7 @@ import devTools from 'remote-redux-devtools';
 import createLogger from 'redux-logger';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import offlineSync from './middleware/offline_sync';
 
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 
@@ -16,7 +17,7 @@ const logger = createLogger({
 });
 
 
-const createGymbrorStore = applyMiddleware(thunk, logger)(createStore);
+const createGymbrorStore = applyMiddleware(thunk, logger, offlineSync)(createStore);
 
 export default function configureStore(cb) {
   const store = autoRehydrate()(createGymbrorStore)(reducers);

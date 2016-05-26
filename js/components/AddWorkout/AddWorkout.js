@@ -111,7 +111,11 @@ class AddWorkout extends Component {
     }
 
     const selectedExercise = _.find(exercises.exercisesFromUser, {'_id': exerciseId});
-    navigator.push({AddExerciseSession: 1, selectedExercise: selectedExercise});
+    navigator.push({EditExerciseSession: 1, selectedExercise: selectedExercise});
+  }
+
+  goToExerciseSession(session) {
+    this.props.navigator.push({EditExerciseSession: 1, selectedSession: session});
   }
 
   render() {
@@ -149,22 +153,18 @@ class AddWorkout extends Component {
         <View style={styles.section}>
           <Text style={G.label}>{'Exercise log:'.toUpperCase()}</Text>
         </View>
+
         {workouts.currentSessions.map((session, i) => {
           return (
-            <View key={i} style={styles.row}>
+            <TouchableHighlight
+              underlayColor={G.grey}
+              key={i}
+              style={styles.row}
+              onPress={this.goToExerciseSession.bind(this, session)}>
               <Text style={styles.rowText}key={i}>{session.name}</Text>
-              <TouchableHighlight
-                onPress={this.removeSession.bind(this, session)}>
-                <Icon
-                  style={styles.removeRow}
-                  name="close"
-                  size={20}
-                  backgroundColor="#FFF"
-                  color='#222222'
-                ></Icon>
-              </TouchableHighlight>
-            </View>
+            </TouchableHighlight>
           )})}
+
         <TouchableHighlight
           style={styles.row}
           underlayColor={G.primary}

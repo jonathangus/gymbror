@@ -5,7 +5,7 @@ import NewExerciseView from '../NewExerciseView/NewExerciseView';
 import ExerciseList from '../ExerciseList/ExerciseList';
 import ExerciseInformation from '../ExerciseInformation/ExerciseInformation';
 import AddWorkout from '../AddWorkout/AddWorkout';
-import AddExerciseSession from '../AddExerciseSession/AddExerciseSession';
+import EditExerciseSession from '../EditExerciseSession/EditExerciseSession';
 import WorkoutInformation from '../WorkoutInformation/WorkoutInformation';
 import WorkoutList from '../WorkoutList/WorkoutList';
 
@@ -36,8 +36,8 @@ class BrorNavigator extends Component {
     else if(route.ExerciseInformation) {
       return <ExerciseInformation data={route.exercise} navigator={navigator} />
     }
-    else if(route.AddExerciseSession) {
-      return <AddExerciseSession navigator={navigator} selectedExercise={route.selectedExercise} />
+    else if(route.EditExerciseSession) {
+      return <EditExerciseSession navigator={navigator} selectedExercise={route.selectedExercise} selectedSession={route.selectedSession} />
     }
 
     const { user } = this.props

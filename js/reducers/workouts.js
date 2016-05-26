@@ -12,6 +12,7 @@ const WORKOUT_CREATED = 'WORKOUT_CREATED';
 const DELETE_WORKOUT = 'DELETE_WORKOUT';
 const SET_WORKOUT_DATE = 'SET_WORKOUT_DATE';
 const REQUEST_COMPLETE = 'REQUEST_COMPLETE';
+const EDIT_EXERCISE_SESSION = 'EDIT_EXERCISE_SESSION';
 
 const initialState = {
   items: [],
@@ -75,6 +76,17 @@ export default function workouts(state = initialState, action) {
         ]
       }
     }
+
+    case EDIT_EXERCISE_SESSION:
+      let updatedSessions = Object.assign([], state.currentSessions);
+      let index = _.findIndex(updatedSessions, {exerciseId: action.session.exerciseId});
+      updatedSessions[index] = action.session;
+
+      return {
+        ...state,
+        currentSessions: updatedSessions
+      }
+
     default:
       return state
   }
@@ -155,7 +167,6 @@ export function removeExerciseSession(session) {
 
 export function createNewWorkout(workoutData) {
   return (dispatch) => {
-    console.log(workoutData);
     createWorkout(workoutData)
       .then((response) => response.json())
       .then((response) => {
@@ -188,5 +199,12 @@ export function deleteWorkout(workoutId) {
         dispatch(loadExercisesByUser());
       })
       .catch(() => errorMessage('Workout could not be deleted'));
+  }
+}
+
+export function editExerciseSession(session) {
+  return {
+    type: EDIT_EXERCISE_SESSION,
+    session: session
   }
 }

@@ -28,14 +28,13 @@ class App extends Component {
 
     // Load exercises
     if(user.isLoggedIn) {
-      dispatch(loadExercisesByUser());
+      //dispatch(loadExercisesByUser());
       dispatch(fetchWorkoutsIfNeeded());
     }
 
     // Test server
     testServer()
-    .then(() => success('Server is working'))
-    .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
+      .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
 
     // Each time the user is logged in lets update its exercise list
     RCTDeviceEventEmitter.addListener(
@@ -53,8 +52,7 @@ class App extends Component {
     if (appState === 'active') {
       CodePush.sync({installMode: CodePush.InstallMode.IMMEDIATE});
       testServer()
-      .then(() => success('Server is working'))
-      .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
+        .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
     }
   }
 
