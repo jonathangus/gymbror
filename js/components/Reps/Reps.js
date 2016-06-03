@@ -15,6 +15,7 @@ import React, {
 export default class Reps extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       rows: this.props.intialRows
     }
@@ -85,17 +86,21 @@ export default class Reps extends Component {
                   keyboardType={'numeric'}
                 />
               </View>
-              <Text style={styles.times}>x</Text>
-              <View style={styles.rowItem}>
-                <TextInput
-                  ref={'value-' + index}
-                  style={styles.inputStyle}
-                  onChangeText={this.changeText.bind(this, index, 'value')}
-                  value={this.state.rows[index] ? this.state.rows[index].value.toString() : null}
-                  onSubmitEditing={() => this.tabNext(index + 1, 'reps')}
-                  keyboardType={'numeric'}
-                />
-            </View>
+            {this.state.type }
+              {this.state.type == 'weight' ? <View>
+                  <Text style={styles.times}>x</Text>
+                  <View style={styles.rowItem}>
+                    <TextInput
+                      ref={'value-' + index}
+                      style={styles.inputStyle}
+                      onChangeText={this.changeText.bind(this, index, 'value')}
+                      value={this.state.rows[index] ? this.state.rows[index].value.toString() : null}
+                      onSubmitEditing={() => this.tabNext(index + 1, 'reps')}
+                      keyboardType={'numeric'}
+                    />
+                </View>
+                </View>
+                : null}
 
               <Icon
                 onPress={this.removeRow.bind(this, index)}

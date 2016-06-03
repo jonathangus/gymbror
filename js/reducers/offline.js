@@ -22,7 +22,6 @@ export default function offline(state = initialState, action) {
 
 export function addExercise(exerciseItem) {
   return (dispatch, getState) => {
-    debugger;
     dispatch({
       type: ADD_EXERCISE,
       exerciseItem: exerciseItem

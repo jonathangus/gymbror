@@ -1,7 +1,7 @@
-//const HOST = __DEV__ ? 'http://localhost:8080': 'http://10.0.1.164:8080';
+const HOST = __DEV__ ? 'http://localhost:8080': 'http://seedsites.net:9096';
 //const HOST = 'http://10.0.1.164:8080';
 // const HOST = 'http://192.168.20.184:8080';
-const HOST = 'http://seedsites.net:9096';
+//const HOST = 'http://seedsites.net:9096';
 const API_PATH = HOST + '/api/v1/';
 
 

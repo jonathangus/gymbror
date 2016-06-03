@@ -10,6 +10,9 @@ export default {
     borderBottomColor: 'rgba(0, 0, 0, 0.1)',
     backgroundColor: 'white'
   },
+  thinRow: {
+    padding: 10,
+  },
   nav: {
     backgroundColor: '#35BAF2',
     color: 'white'

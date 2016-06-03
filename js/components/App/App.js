@@ -28,7 +28,7 @@ class App extends Component {
 
     // Load exercises
     if(user.isLoggedIn) {
-      //dispatch(loadExercisesByUser());
+      dispatch(loadExercisesByUser());
       dispatch(fetchWorkoutsIfNeeded());
     }
 
@@ -40,7 +40,10 @@ class App extends Component {
     RCTDeviceEventEmitter.addListener(
       FBLoginManager.Events["Login"],
       () => {
-        setTimeout(() => dispatch(loadExercisesByUser()), 300);
+        setTimeout(() => {
+          dispatch(fetchWorkoutsIfNeeded());
+          dispatch(loadExercisesByUser())
+        }, 300);
       }
     );
 

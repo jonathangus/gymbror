@@ -7,6 +7,7 @@ import Back from '../Back/Back';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
 import moment from 'moment';
+import ExerciseSelect from '../ExerciseSelect/ExerciseSelect';
 
 import React, {
   Component,
@@ -17,6 +18,7 @@ import React, {
   DatePickerIOS,
   AlertIOS,
   Animated,
+  ScrollView,
   Dimensions
 } from 'react-native';
 
@@ -64,7 +66,7 @@ class AddWorkout extends Component {
     this.props.dispatch(setWorkoutDate(date));
     this.setState({date: date});
   }
-  
+
   toggleChooser(type) {
       if(!type || this.state.selectedChooseType == type) {
         Animated.timing(this.state.offSet, {
@@ -114,6 +116,11 @@ class AddWorkout extends Component {
     navigator.push({EditExerciseSession: 1, selectedExercise: selectedExercise});
   }
 
+  _newExercise(exercise) {
+    const { navigator } = this.props;
+    navigator.push({EditExerciseSession: 1, selectedExercise: exercise});
+  }
+
   goToExerciseSession(session) {
     this.props.navigator.push({EditExerciseSession: 1, selectedSession: session});
   }
@@ -122,9 +129,6 @@ class AddWorkout extends Component {
     const exitIcon = <Back onPress={() => this.props.navigator.push({})} />
     const { workouts, exercises } = this.props;
     const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'exerciseId': ex._id}));
-    const exerciseOptions = trimmedExercises.map((ex, key) => {
-      return <Picker.Item key={key} label={ex.name} value={ex._id} />;
-    });
 
     const datepicker = <View style={styles.picker}>
       <View style={styles.pickerTop}>
@@ -150,71 +154,79 @@ class AddWorkout extends Component {
             handler: this.submitWorkout.bind(this)
           }}
         />
-        <View style={styles.section}>
-          <Text style={G.label}>{'Exercise log:'.toUpperCase()}</Text>
-        </View>
-
-        {workouts.currentSessions.map((session, i) => {
-          return (
-            <TouchableHighlight
-              underlayColor={G.grey}
-              key={i}
-              style={styles.row}
-              onPress={this.goToExerciseSession.bind(this, session)}>
-              <Text style={styles.rowText}key={i}>{session.name}</Text>
-            </TouchableHighlight>
-          )})}
-
-        <TouchableHighlight
-          style={styles.row}
-          underlayColor={G.primary}
-          onPress={() => {this.toggleChooser('exercises')}}>
-          <View style={styles.addExercise}>
-            <Icon
-              name="plus"
-              size={27}
-              style={styles.addIcon}
-              backgroundColor="#FFF"
-              color={G.primary} />
-            <Text>Add exercise</Text>
+        <ScrollView>
+          <View style={styles.section}>
+            <Text style={G.label}>{'Exercise log:'.toUpperCase()}</Text>
           </View>
-        </TouchableHighlight>
 
-        <View style={styles.section}>
-          <Text style={G.label}>{'Edit workout date:'.toUpperCase()}</Text>
-        </View>
-
-        <TouchableHighlight
-          style={styles.row}
-          underlayColor={G.primary}
-          onPress={() => this.toggleChooser('datePicker')}>
-          <View style={styles.addExercise}>
-            <Text>{moment(this.state.date).format('D MMM. YYYY, HH:mm').toLowerCase()}</Text>
-          </View>
-        </TouchableHighlight>
-
-        {this.state.selectedChooseType ?
-          <Animated.View style={[styles.chooseWrap, { transform: [{translateY:this.state.offSet}] }]}>
-            {this.state.selectedChooseType == 'datePicker' ? datepicker :
-              <View style={styles.picker}>
-                <View style={styles.pickerTop}>
-                  <Text style={styles.pickerTopText} onPress={this.selectExercise.bind(this)}>
-                    Select
-                  </Text>
+          {workouts.currentSessions.map((session, i) => {
+            return (
+              <TouchableHighlight
+                underlayColor={G.grey}
+                key={i}
+                style={[styles.row, styles.itemRow]}
+                onPress={this.goToExerciseSession.bind(this, session)}>
+                <View style={styles.innerRow}>
+                  <Text style={styles.rowText}key={i}>{session.name}</Text>
+                  <Icon.Button
+                    name="minus"
+                    size={27}
+                    onPress={this.removeSession.bind(this, session)}
+                    style={styles.removeIcon}
+                    backgroundColor="#FFF"
+                    color={G.primary} />
                 </View>
-                <Picker
-                  selectedValue={this.state.selectedExercise ? this.state.selectedExercise.value : null}
-                  onValueChange={(exercise, index) => this.setState({
-                    selectedExercise: {
-                      name: trimmedExercises[index].name,
-                      value: exercise
-                    }
-                  })}>
-                  {exerciseOptions}
-                </Picker>
-              </View>}
-          </Animated.View>
-        : null}
+
+              </TouchableHighlight>
+            )})}
+
+          <View style={styles.section}>
+            <Text style={G.label}>{'Select exercise:'.toUpperCase()}</Text>
+          </View>
+
+          <ExerciseSelect
+            onSelect={this._newExercise.bind(this)}
+            exercises={trimmedExercises} />
+
+            <View style={styles.section}>
+              <Text style={G.label}>{'Create new exercise:'.toUpperCase()}</Text>
+            </View>
+
+          <TouchableHighlight
+            style={styles.row}
+            underlayColor={G.primary}
+            onPress={() => this.props.navigator.push({newExercise: 1})}>
+            <View style={styles.addExercise}>
+              <Icon
+                name="plus"
+                size={27}
+                style={styles.addIcon}
+                backgroundColor="#FFF"
+                color={G.primary} />
+              <Text>Create new exercise</Text>
+            </View>
+          </TouchableHighlight>
+
+
+          <View style={styles.section}>
+            <Text style={G.label}>{'Edit workout date:'.toUpperCase()}</Text>
+          </View>
+
+          <TouchableHighlight
+            style={styles.row}
+            underlayColor={G.primary}
+            onPress={() => this.toggleChooser('datePicker')}>
+            <View style={styles.addExercise}>
+              <Text>{moment(this.state.date).format('D MMM. YYYY, HH:mm').toLowerCase()}</Text>
+            </View>
+          </TouchableHighlight>
+
+          {this.state.selectedChooseType ?
+            <Animated.View style={[styles.chooseWrap, { transform: [{translateY:this.state.offSet}] }]}>
+              {datepicker}
+            </Animated.View>
+          : null}
+        </ScrollView>
       </View>
     );
   }

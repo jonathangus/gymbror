@@ -19,11 +19,7 @@ import React, {
 const defaultValues = [
   {
     reps: 10,
-    value: 70
-  },
-  {
-    reps: 10,
-    value: 65
+    value: ''
   }
 ];
 
@@ -34,6 +30,7 @@ class EditExerciseSession extends Component {
     this.state = {
       selectedExercise: null,
       selectorOpen: true,
+      selectedType: selectedExercise ? selectedExercise.type : selectedSession.type,
       exerciseName: selectedExercise ? selectedExercise.name : selectedSession.name,
       newInstance: selectedExercise ? true : false
     }
@@ -69,9 +66,15 @@ class EditExerciseSession extends Component {
       <View style={styles.container}>
         <NavigationBar
           leftButton={exitIcon}
-          title={{ title: 'Add ' + this.state.name + ' exercise' }}/>
+          title={{ title: 'Add ' + this.state.exerciseName + ' exercise' }}/>
 
-        {this.state.rows ? <Reps onComplete={this.state.newInstance ? this.onSessionAdded.bind(this) : this.onSessionEdit.bind(this)} intialRows={this.state.rows} /> : null}
+        {this.state.rows ?
+          <Reps
+            onComplete={this.state.newInstance ? this.onSessionAdded.bind(this) : this.onSessionEdit.bind(this)}
+            intialRows={this.state.rows}
+            type={this.state.selectedType}
+          />
+        : null}
       </View>
     );
   }
