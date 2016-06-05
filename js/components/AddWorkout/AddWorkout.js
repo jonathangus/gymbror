@@ -7,6 +7,7 @@ import Back from '../Back/Back';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
 import moment from 'moment';
+import _ from 'lodash';
 import ExerciseSelect from '../ExerciseSelect/ExerciseSelect';
 
 import React, {
@@ -139,6 +140,7 @@ class AddWorkout extends Component {
             handler: this.submitWorkout.bind(this)
           }}
         />
+
         <ScrollView>
           <View style={styles.section}>
             <Text style={G.label}>{'Exercise log:'.toUpperCase()}</Text>

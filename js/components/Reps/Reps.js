@@ -243,24 +243,28 @@ export default class Reps extends Component {
             style={styles.keyboardButton}
             name='controller-fast-backward'
             backgroundColor={G.primary}
+            size={24}
             onPress={this.keyBoardPager.bind(this, 'back')}/>
 
          <IconEntypo.Button
            style={styles.keyboardButton}
            onPress={this.changeInputValue.bind(this, 'down')}
            name='circle-with-minus'
+           size={24}
            backgroundColor={G.primary} />
 
          <IconEntypo.Button
            style={styles.keyboardButton}
            onPress={this.changeInputValue.bind(this, 'up')}
            name='circle-with-plus'
+           size={24}
            backgroundColor={G.primary} />
 
          <IconEntypo.Button
            style={styles.keyboardButton}
            name='controller-fast-forward'
            backgroundColor={G.primary}
+           size={24}
            onPress={this.keyBoardPager.bind(this, 'next')}/>
         </View> : null}
       </Animated.View>
@@ -283,10 +287,10 @@ var styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   keyboardButton: {
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 8,
-    paddingRight: 0,
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 15,
+    paddingRight: 7,
   },
   suggestion: {
     color: 'gray',

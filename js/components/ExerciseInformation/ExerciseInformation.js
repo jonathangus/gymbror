@@ -4,7 +4,7 @@ import { loadDetailExercise } from '../../reducers/exercises';
 import G from '../../global';
 import moment from 'moment';
 import Button from '../Button/Button';
-import { VictoryArea } from 'victory';
+import RNChart from 'react-native-chart';
 
 import React, {
   Component,
@@ -15,6 +15,14 @@ import React, {
 } from 'react-native';
 
 var styles = StyleSheet.create({
+  chart: {
+    flex: 1,
+    marginTop:30,
+    marginBottom:30,
+    height: 250,
+    marginLeft: 10,
+    marginRight: 5
+  },
   container: {
     flex: 1,
     backgroundColor: G.grey,
@@ -51,22 +59,41 @@ class ExerciseInformation extends Component {
       graphItem.date = sess.date;
 
       let sessionValue = 0;
-
+      let maxValue = 0;
       sess.sets.forEach((set) => {
         if(data.type == 'weight') {
           const epleyFormula = (weight, reps) => weight * (1 + reps / 30);
-          sessionValue = sessionValue + epleyFormula(parseInt(set.reps),parseFloat(set.value));
+          const oneRM = epleyFormula(parseInt(set.reps),parseFloat(set.value));
+          sessionValue = sessionValue + oneRM;
+          maxValue = maxValue < oneRM ? oneRM : maxValue;
         }
         else {
           sessionValue += parseInt(set.reps);
+          maxValue = maxValue < set.reps ? set.reps : maxValue;
         }
       });
 
       graphItem.medianValue = sessionValue / sess.sets.length;
+      graphItem.maxValue = maxValue;
       graphData.push(graphItem);
     });
     
     return graphData;
+  }
+
+  generateGraph() {
+    const { graphData } = this.state;
+
+    return {
+      labels: graphData.map(g => moment(g.date).format('DD/MM')).reverse(),
+      data: [{
+        name: 'LineChart',
+        color: 'gray',
+        highlightColor: 'orange',
+        showDataPoint: true,
+        data: graphData.map(g => g.medianValue).reverse(),
+      }]
+    }
   }
 
   leftButtonConfig() {
@@ -77,7 +104,7 @@ class ExerciseInformation extends Component {
   }
 
   render() {
-    let _scrollView;
+    const graph = this.generateGraph();
     const { data } = this.props;
     return (
       <View style={styles.container}>
@@ -85,30 +112,13 @@ class ExerciseInformation extends Component {
           title={{ title: data.name }}
           leftButton={this.leftButtonConfig()} />
 
-        {this.state.graphData.map((g) => { return(
-          <View>
-            <Text>{g.date}</Text>
-            <Text>Median: {g.medianValue}</Text>
-          </View>
-        )})}
-
-        <VictoryArea
-          data={[
-    {x: 1, y: 1},
-    {x: 2, y: 2},
-    {x: 3, y: 3},
-    {x: 4, y: 1},
-    {x: 5, y: 3},
-    {x: 6, y: 4},
-    {x: 7, y: 2}
-  ]}
-        />
-
-
         <ScrollView
-          ref={(scrollView) => { _scrollView = scrollView; }}
           scrollEventThrottle={200}
           showsVerticalScrollIndicator={true}>
+            <RNChart style={styles.chart}
+                     chartData={graph.data}
+                     verticalGridStep={5}
+                     xLabels={graph.labels} />
             {data.sessions.map((unit, key) => {
               return (
                 <View key={key}>
