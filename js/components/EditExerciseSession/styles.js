@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import G from '../../global';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: G.grey
   },
   closeButton: {
     padding: 6

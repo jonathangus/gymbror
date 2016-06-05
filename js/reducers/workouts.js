@@ -144,16 +144,11 @@ export function fetchWorkoutsIfNeeded() {
   }
 }
 
-export function addExerciseSession(sets, exerciseId, userId, name) {
+export function addExerciseSession(session) {
   return (dispatch) => {
     dispatch({
       type: ADD_EXERCISE_SESSION,
-      session: {
-        sets: sets,
-        exerciseId: exerciseId,
-        userId: userId,
-        name: name
-      }
+      session: session
     });
   }
 }

@@ -26,7 +26,8 @@
     "redux-logger": "^2.6.1",
     "redux-persist": "^2.0.1",
     "redux-thunk": "^2.0.1",
-    "remote-redux-devtools": "^0.2.0"
+    "remote-redux-devtools": "^0.2.0",
+    "victory": "^0.8.0"
   },
   "devDependencies": {}
 }

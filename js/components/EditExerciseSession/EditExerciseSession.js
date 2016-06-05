@@ -19,7 +19,7 @@ import React, {
 const defaultValues = [
   {
     reps: 10,
-    value: ''
+    value: 0
   }
 ];
 
@@ -54,19 +54,27 @@ class EditExerciseSession extends Component {
   }
 
   onSessionAdded(sets) {
-    const { dispatch, user, selectedExercise } = this.props;
+    const { dispatch, user, navigator, selectedExercise } = this.props;
     const exerciseId = selectedExercise._id;
-    this.props.navigator.push({addWorkout: 1});
-    dispatch(addExerciseSession(sets, exerciseId, user.data.userId, selectedExercise.name));
+    navigator.push({addWorkout: 1});
+    const newSession = {
+      sets: sets,
+      exerciseId: exerciseId,
+      userId: user.data.userId,
+      name: selectedExercise.name,
+      type: selectedExercise.type
+    }
+    dispatch(addExerciseSession(newSession));
   }
-  
+
   render() {
     const exitIcon = <Back onPress={() => this.props.navigator.push({addWorkout: 1})} />;
     return (
       <View style={styles.container}>
         <NavigationBar
           leftButton={exitIcon}
-          title={{ title: 'Add ' + this.state.exerciseName + ' exercise' }}/>
+          title={{ title: (this.state.newInstance ? 'Add ' : 'Edit ') + this.state.exerciseName + ' exercise' }}
+        />
 
         {this.state.rows ?
           <Reps

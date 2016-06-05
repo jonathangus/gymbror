@@ -101,21 +101,6 @@ class AddWorkout extends Component {
       }
   }
 
-  selectExercise() {
-    const { exercises, workouts, navigator } = this.props;
-    let exerciseId;
-    if(this.state.selectedExercise) {
-      exerciseId = this.state.selectedExercise.value;
-    }
-    else {
-      const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'exerciseId': ex._id}));
-      exerciseId = trimmedExercises[0]._id;
-    }
-
-    const selectedExercise = _.find(exercises.exercisesFromUser, {'_id': exerciseId});
-    navigator.push({EditExerciseSession: 1, selectedExercise: selectedExercise});
-  }
-
   _newExercise(exercise) {
     const { navigator } = this.props;
     navigator.push({EditExerciseSession: 1, selectedExercise: exercise});

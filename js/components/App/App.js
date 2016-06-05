@@ -23,6 +23,12 @@ class App extends Component {
 
     // Sync our code
     CodePush.sync({ installMode: CodePush.InstallMode.IMMEDIATE});
+    CodePush.checkForUpdate()
+    .then((update) => {
+      if (update) {
+        success("An update is available!");
+      }
+    });
 
     const { dispatch, user } = this.props;
 

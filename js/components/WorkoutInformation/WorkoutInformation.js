@@ -3,6 +3,7 @@ import Button from '../Button/Button';
 import { deleteWorkout } from '../../reducers/workouts';
 import { connect } from 'react-redux';
 import G from '../../global';
+import Icon from 'react-native-vector-icons/Entypo';
 
 import React, {
   Component,
@@ -24,7 +25,9 @@ var styles = StyleSheet.create({
     flex:1
   },
   remove: {
-    marginBottom: 30
+    marginBottom: 30,
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   name: {
     backgroundColor: G.grey,
@@ -37,6 +40,12 @@ var styles = StyleSheet.create({
     color: '#808080',
     width: 35,
   },
+  removeButton: {
+    flex: 0,
+  },
+  removeText: {
+    color: 'white'
+  }
 });
 
 
@@ -94,7 +103,13 @@ class WorkoutInformation extends Component {
               </ScrollView>
             </View>
           <View style={styles.remove}>
-            <Button type={'danger'} onPress={this.removeWorkout.bind(this)}>Remove</Button>
+            <Icon.Button
+              style={styles.removeButton}
+              onPress={this.removeWorkout.bind(this)}
+              name='cross'
+              backgroundColor={G.danger}>
+              <Text style={styles.removeText}>Remove</Text>
+            </Icon.Button>
           </View>
         </View>
       );

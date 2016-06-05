@@ -4,6 +4,7 @@ import { loadDetailExercise } from '../../reducers/exercises';
 import G from '../../global';
 import moment from 'moment';
 import Button from '../Button/Button';
+import { VictoryArea } from 'victory';
 
 import React, {
   Component,
@@ -32,6 +33,42 @@ var styles = StyleSheet.create({
 });
 
 class ExerciseInformation extends Component {
+  constructor(props) {
+    super(props);
+    
+    
+    this.state = {
+      graphData: this.getGraphData()
+    }
+  }
+
+  getGraphData() {
+    const { data } = this.props;
+
+    let graphData = [];
+    data.sessions.forEach((sess) => {
+      let graphItem = {};
+      graphItem.date = sess.date;
+
+      let sessionValue = 0;
+
+      sess.sets.forEach((set) => {
+        if(data.type == 'weight') {
+          const epleyFormula = (weight, reps) => weight * (1 + reps / 30);
+          sessionValue = sessionValue + epleyFormula(parseInt(set.reps),parseFloat(set.value));
+        }
+        else {
+          sessionValue += parseInt(set.reps);
+        }
+      });
+
+      graphItem.medianValue = sessionValue / sess.sets.length;
+      graphData.push(graphItem);
+    });
+    
+    return graphData;
+  }
+
   leftButtonConfig() {
     return {
       title: 'Back',
@@ -47,6 +84,27 @@ class ExerciseInformation extends Component {
         <NavigationBar
           title={{ title: data.name }}
           leftButton={this.leftButtonConfig()} />
+
+        {this.state.graphData.map((g) => { return(
+          <View>
+            <Text>{g.date}</Text>
+            <Text>Median: {g.medianValue}</Text>
+          </View>
+        )})}
+
+        <VictoryArea
+          data={[
+    {x: 1, y: 1},
+    {x: 2, y: 2},
+    {x: 3, y: 3},
+    {x: 4, y: 1},
+    {x: 5, y: 3},
+    {x: 6, y: 4},
+    {x: 7, y: 2}
+  ]}
+        />
+
+
         <ScrollView
           ref={(scrollView) => { _scrollView = scrollView; }}
           scrollEventThrottle={200}
