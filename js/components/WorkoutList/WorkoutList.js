@@ -6,10 +6,10 @@ import _ from 'lodash'
 import G from '../../global';
 import Button from '../Button/Button';
 import Back from '../Back/Back';
+import React, { Component } from 'react';
 
-import React, {
+import {
   AppRegistry,
-  Component,
   StyleSheet,
   Text,
   View,

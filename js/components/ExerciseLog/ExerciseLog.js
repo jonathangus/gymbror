@@ -1,7 +1,7 @@
 import _ from 'lodash';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   StyleSheet,
   Text,
   View,

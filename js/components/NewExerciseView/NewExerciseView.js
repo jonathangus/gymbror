@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
-import { createExercise } from '../../reducers/exercises';
+import { createExercise } from '../../actions/exercises';
 import { MessageBarManager } from 'react-native-message-bar';
 import NavigationBar from 'react-native-navbar';
 import Back from '../Back/Back';
 import Button from '../Button/Button';
 import G from '../../global';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,
@@ -35,7 +35,8 @@ class NewExerciseView extends Component {
   _saveExercise() {
     const { name, types, selectedIndex } = this.state;
     const match = this.props.exercises.exercisesFromUser.filter((exer) => name.toLowerCase() == exer.name.toLowerCase());
-
+    this.props.dispatch(createExercise(name, types[selectedIndex].toLowerCase()));
+    return;
     if(match.length > 0) {
       AlertIOS.alert(
         'Hey!',

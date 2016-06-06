@@ -4,10 +4,10 @@ import { loadDetailExercise } from '../../reducers/exercises';
 import G from '../../global';
 import moment from 'moment';
 import Button from '../Button/Button';
-import RNChart from 'react-native-chart';
+//import RNChart from 'react-native-chart';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   StyleSheet,
   Text,
   View,
@@ -106,6 +106,10 @@ class ExerciseInformation extends Component {
   render() {
     const graph = this.generateGraph();
     const { data } = this.props;
+    //<RNChart style={styles.chart}
+    //         chartData={graph.data}
+    //         verticalGridStep={5}
+    //         xLabels={graph.labels} />
     return (
       <View style={styles.container}>
         <NavigationBar
@@ -115,10 +119,7 @@ class ExerciseInformation extends Component {
         <ScrollView
           scrollEventThrottle={200}
           showsVerticalScrollIndicator={true}>
-            <RNChart style={styles.chart}
-                     chartData={graph.data}
-                     verticalGridStep={5}
-                     xLabels={graph.labels} />
+
             {data.sessions.map((unit, key) => {
               return (
                 <View key={key}>

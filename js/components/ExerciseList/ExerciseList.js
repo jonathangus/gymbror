@@ -1,4 +1,3 @@
-import React from 'react-native';
 import { connect } from 'react-redux';
 import styles from './styles';
 import Swipeout from 'react-native-swipeout';
@@ -7,15 +6,15 @@ import { deleteExercise } from '../../reducers/exercises';
 import Icon from 'react-native-vector-icons/Entypo';
 import G from '../../global';
 import Back from '../Back/Back';
+import React, { Component } from 'react';
 
-const {
-  Component,
+import {
   View,
   Text,
   AlertIOS,
   ListView,
   TouchableHighlight
-  } = React;
+} from 'react-native';
 
 let selectedExercise;
 

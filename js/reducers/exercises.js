@@ -2,6 +2,8 @@ import { loadExercises, newExercise, removeExercise, getDetailedInformation } fr
 import { MessageBarManager } from 'react-native-message-bar';
 import { errorMessage, defaultError } from '../error_handling';
 
+import { NEW_EXERCISE } from '../actions/exercises';
+
 const initialState = {
   exercisesFromUser: [],
   suggestedExercises: [
@@ -16,7 +18,6 @@ const LOAD_EXERCISES_BY_USER = 'LOAD_EXERCISES_BY_USER';
 const LOAD_DETAILED_EXERCISE = 'LOAD_DETAILED_EXERCISE';
 const EXERCISE_LOADING_COMPLETE = 'EXERCISE_LOADING_COMPLETE';
 const SET_DETAILED_EXERCISE = 'SET_DETAILED_EXERCISE';
-export const NEW_EXERCISE = 'NEW_EXERCISE';
 
 export default function exercises(state = initialState, action) {
   switch(action.type) {

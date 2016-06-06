@@ -1,8 +1,8 @@
 import G from '../../global';
 import Icon from 'react-native-vector-icons/Entypo';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,
@@ -29,7 +29,7 @@ const underlay = {
   action: G.primary
 };
 
-export default class Button extends Component {
+export default class Back extends Component {
   constructor(props) {
     super(props);
   }

@@ -10,9 +10,9 @@ import { errorMessage, success } from '../../error_handling';
 import AppState from 'AppState';
 import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
 import CodePush from 'react-native-code-push';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   View,
   StatusBar
 } from 'react-native';

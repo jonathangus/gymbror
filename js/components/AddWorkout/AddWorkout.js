@@ -9,9 +9,9 @@ import G from '../../global';
 import moment from 'moment';
 import _ from 'lodash';
 import ExerciseSelect from '../ExerciseSelect/ExerciseSelect';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,

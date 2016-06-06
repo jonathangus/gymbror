@@ -5,9 +5,9 @@ import AddWorkout from '../AddWorkout/AddWorkout';
 import styles from './styles';
 import NavigationBar from 'react-native-navbar';
 import G from '../../global';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   StyleSheet,
   Text,
   Image,

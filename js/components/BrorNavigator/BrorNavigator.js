@@ -8,10 +8,10 @@ import AddWorkout from '../AddWorkout/AddWorkout';
 import EditExerciseSession from '../EditExerciseSession/EditExerciseSession';
 import WorkoutInformation from '../WorkoutInformation/WorkoutInformation';
 import WorkoutList from '../WorkoutList/WorkoutList';
+import React, { Component } from 'react';
 
-import React, {
+import {
   Navigator,
-  Component,
   StyleSheet
 } from 'react-native';
 

@@ -1,8 +1,7 @@
 import G from '../../global';
+import React, { Component } from 'react';
 
-
-import React, {
-  Component,
+import {
   Text,
   View,
   StyleSheet,

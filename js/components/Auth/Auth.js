@@ -1,13 +1,12 @@
-import React from 'react-native';
 import Video from 'react-native-video';
 import FBLogin from 'react-native-facebook-login';
 import { FBLoginManager } from 'NativeModules';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { setUser, logoutUser } from '../../reducers/user';
+import React, { Component } from 'react';
 
 const {
-  Component,
   View,
 } = React;
 

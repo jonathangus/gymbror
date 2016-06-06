@@ -4,9 +4,9 @@ import { deleteWorkout } from '../../reducers/workouts';
 import { connect } from 'react-redux';
 import G from '../../global';
 import Icon from 'react-native-vector-icons/Entypo';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,

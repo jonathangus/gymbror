@@ -6,9 +6,9 @@ import _ from 'lodash';
 import Reps from '../Reps/Reps';
 import { addExerciseSession, editExerciseSession } from '../../reducers/workouts';
 import Back from '../Back/Back';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,

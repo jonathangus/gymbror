@@ -1,30 +1,11 @@
-const initialState = {
-  exercises: [],
-  workouts: []
-};
+import { OFFLINE_SYNC_ADD, SYNC } from '../middleware/sync';
 
-const ADD_EXERCISE = 'ADD_EXERCISE';
-
-export default function offline(state = initialState, action) {
+export default function offline(state = [], action) {
   switch(action.type) {
-
-    case ADD_EXERCISE:
-      return {
-        ...state,
-        exercises: [...state.exercises, action.exerciseItem]
-      }
+    case OFFLINE_SYNC_ADD:
+      return [...state, action[SYNC]]
 
     default:
       return state
-  }
-
-}
-
-export function addExercise(exerciseItem) {
-  return (dispatch, getState) => {
-    dispatch({
-      type: ADD_EXERCISE,
-      exerciseItem: exerciseItem
-    });
   }
 }

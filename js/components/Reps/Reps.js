@@ -2,9 +2,9 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
 import Button from '../Button/Button';
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import React, { Component } from 'react';
 
-import React, {
-  Component,
+import {
   Text,
   View,
   TouchableHighlight,
