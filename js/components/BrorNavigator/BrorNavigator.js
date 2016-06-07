@@ -34,7 +34,7 @@ class BrorNavigator extends Component {
       return <AddWorkout navigator={navigator} />
     }
     else if(route.ExerciseInformation) {
-      return <ExerciseInformation data={route.exercise} navigator={navigator} />
+      return <ExerciseInformation exerciseData={route.exercise} navigator={navigator} />
     }
     else if(route.EditExerciseSession) {
       return <EditExerciseSession navigator={navigator} selectedExercise={route.selectedExercise} selectedSession={route.selectedSession} />

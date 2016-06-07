@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import NavigationBar from 'react-native-navbar';
-import { loadDetailExercise } from '../../reducers/exercises';
 import G from '../../global';
 import moment from 'moment';
 import Button from '../Button/Button';
@@ -41,27 +40,36 @@ var styles = StyleSheet.create({
 });
 
 class ExerciseInformation extends Component {
+  static propTypes = {
+    exerciseData: React.PropTypes.object.isRequired
+  }
+  
   constructor(props) {
     super(props);
     
-    
     this.state = {
-      graphData: this.getGraphData()
+      graphData: this.getGraphData(),
+      sessions: this.getSessions()
     }
   }
 
-  getGraphData() {
-    const { data } = this.props;
+  getSessions() {
+    const { sessions, exerciseData } = this.props;
+    return sessions.filter(s => s._exerciseId === exerciseData._brorId);
+  }
 
+  getGraphData() {
+    const { exerciseData } = this.props;
+    
     let graphData = [];
-    data.sessions.forEach((sess) => {
+    exerciseData.sessions.forEach((sess) => {
       let graphItem = {};
       graphItem.date = sess.date;
 
       let sessionValue = 0;
       let maxValue = 0;
       sess.sets.forEach((set) => {
-        if(data.type == 'weight') {
+        if(exerciseData.type == 'weight') {
           const epleyFormula = (weight, reps) => weight * (1 + reps / 30);
           const oneRM = epleyFormula(parseInt(set.reps),parseFloat(set.value));
           sessionValue = sessionValue + oneRM;
@@ -105,22 +113,24 @@ class ExerciseInformation extends Component {
 
   render() {
     const graph = this.generateGraph();
-    const { data } = this.props;
+    const { exerciseData } = this.props;
+    const { sessions } = this.state;
+    console.log(this.state);
     //<RNChart style={styles.chart}
-    //         chartData={graph.data}
+    //         chartData={graph.exerciseData}
     //         verticalGridStep={5}
     //         xLabels={graph.labels} />
     return (
       <View style={styles.container}>
         <NavigationBar
-          title={{ title: data.name }}
+          title={{ title: exerciseData.name }}
           leftButton={this.leftButtonConfig()} />
 
         <ScrollView
           scrollEventThrottle={200}
           showsVerticalScrollIndicator={true}>
 
-            {data.sessions.map((unit, key) => {
+            {sessions.map((unit, key) => {
               return (
                 <View key={key}>
                   <Text style={styles.name}>{moment(unit.date).format('D MMMM - YYYY')}</Text>
@@ -137,7 +147,7 @@ class ExerciseInformation extends Component {
               )
             })}
         </ScrollView>
-        {data.sessions.length == 0 ?
+        {sessions.length == 0 ?
           <Button onPress={() => {this.props.navigator.push({addWorkout: 1})}}>
             You dont have any workouts for this exercise, create one?</Button>: null}
       </View>
@@ -147,6 +157,7 @@ class ExerciseInformation extends Component {
 
 export default connect(
   (state) => ({
-    exercises: state.exercises
+    exercises: state.exercises,
+    sessions: state.sessions
   })
 )(ExerciseInformation);

@@ -1,6 +1,6 @@
 import NavigationBar from 'react-native-navbar';
 import Button from '../Button/Button';
-import { deleteWorkout } from '../../reducers/workouts';
+import { deleteWorkout } from '../../actions/workoutActions';
 import { connect } from 'react-redux';
 import G from '../../global';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -50,6 +50,9 @@ var styles = StyleSheet.create({
 
 
 class WorkoutInformation extends Component {
+    static propTypes = {
+      workoutData: React.PropTypes.object.isRequired
+    }
 
     removeWorkout() {
       AlertIOS.alert(
@@ -58,7 +61,7 @@ class WorkoutInformation extends Component {
         [{
           text: 'Remove', onPress: () => {
             const { dispatch, workoutData, navigator } = this.props;
-            dispatch(deleteWorkout(workoutData._id));
+            dispatch(deleteWorkout(workoutData));
             navigator.push({workoutList: 1});
           }
         },
@@ -68,7 +71,7 @@ class WorkoutInformation extends Component {
     }
 
     render() {
-      const { workoutData } = this.props;
+      const { workoutData: { sessions } } = this.props;
       return (
         <View style={styles.container}>
           <NavigationBar
@@ -79,14 +82,13 @@ class WorkoutInformation extends Component {
             }}/>
             <View style={styles.content}>
               <ScrollView
-                ref={(scrollView) => { _scrollView = scrollView; }}
                 scrollEventThrottle={200}
                 showsVerticalScrollIndicator={true}>
-                  {workoutData.exerciseUnits ? workoutData.exerciseUnits.map((unit, i) => {
+                  {sessions.map((unit, i) => {
                     return (
                       <View key={i}>
                         <View style={G.section}>
-                          <Text style={G.label}>{unit.exercise ? unit.exercise.name.toUpperCase() : 'Missing name'}</Text>
+                          <Text style={G.label}>{unit.exerciseName ? unit.exerciseName.toUpperCase() : 'MISSING NAME'}</Text>
                         </View>
                         {unit.sets.map((set, i) => {
                           return (
@@ -99,7 +101,7 @@ class WorkoutInformation extends Component {
                         })}
                   </View>
                   )
-                }): null}
+                })}
               </ScrollView>
             </View>
           <View style={styles.remove}>

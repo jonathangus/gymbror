@@ -7,6 +7,7 @@ import Reps from '../Reps/Reps';
 import { addExerciseSession, editExerciseSession } from '../../reducers/workouts';
 import Back from '../Back/Back';
 import React, { Component } from 'react';
+import { generate } from 'shortid';
 
 import {
   Text,
@@ -31,7 +32,7 @@ class EditExerciseSession extends Component {
       selectedExercise: null,
       selectorOpen: true,
       selectedType: selectedExercise ? selectedExercise.type : selectedSession.type,
-      exerciseName: selectedExercise ? selectedExercise.name : selectedSession.name,
+      exerciseName: selectedExercise ? selectedExercise.exerciseName : selectedSession.exerciseName,
       newInstance: selectedExercise ? true : false
     }
     if(selectedSession && selectedSession.sets) {
@@ -55,14 +56,15 @@ class EditExerciseSession extends Component {
 
   onSessionAdded(sets) {
     const { dispatch, user, navigator, selectedExercise } = this.props;
-    const exerciseId = selectedExercise._id;
+    const exerciseId = selectedExercise._brorId;
     navigator.push({addWorkout: 1});
     const newSession = {
       sets: sets,
-      exerciseId: exerciseId,
+      _exerciseId: exerciseId,
       userId: user.data.userId,
-      name: selectedExercise.name,
-      type: selectedExercise.type
+      exerciseName: selectedExercise.name,
+      type: selectedExercise.type,
+      _brorId: generate()
     }
     dispatch(addExerciseSession(newSession));
   }

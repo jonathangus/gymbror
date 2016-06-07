@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import styles from './styles';
 import Swipeout from 'react-native-swipeout';
 import NavigationBar from 'react-native-navbar';
-import { deleteExercise } from '../../reducers/exercises';
+import { deleteExercise } from '../../actions/exerciseActions';
 import Icon from 'react-native-vector-icons/Entypo';
 import G from '../../global';
 import Back from '../Back/Back';

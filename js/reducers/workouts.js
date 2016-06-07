@@ -1,3 +1,4 @@
+import { ADD_WORKOUT } from '../actions/actionTypes';
 import { reciveWorkouts, createWorkout, removeWorkout } from '../api';
 import _ from 'lodash';
 import { errorMessage, defaultError, success } from '../error_handling';
@@ -22,8 +23,26 @@ const initialState = {
   localItems: []
 };
 
-export default function workouts(state = initialState, action) {
+export default (state = initialState, action) => {
   switch(action.type) {
+    case ADD_WORKOUT:
+      return {
+        ...state,
+        items: [...state.items, action.newWorkout],
+        currentSessions: [],
+        currentDate: new Date()
+      }
+
+    case DELETE_WORKOUT:
+      var index = _.findIndex(state.items, {_brorId: action.workoutData._brorId});
+      return {
+        ...state,
+        items: [
+          ...state.items.slice(0, index),
+          ...state.items.slice(index + 1)
+        ]
+      }
+
     case RECIVED_WORKOUTS:
       return Object.assign({}, state, {
         isFetching: false,
@@ -48,7 +67,7 @@ export default function workouts(state = initialState, action) {
       }
 
     case REMOVE_EXERCISE_SESSION:
-      const trimmedSessions = state.currentSessions.filter(session => session.exerciseId !== action.session.exerciseId);
+      const trimmedSessions = state.currentSessions.filter(session => session._exerciseId !== action.session._exerciseId);
       return {
         ...state,
         currentSessions: trimmedSessions
@@ -67,19 +86,9 @@ export default function workouts(state = initialState, action) {
         currentDate: action.date
       }
 
-    case DELETE_WORKOUT: {
-      return {
-        ...state,
-        items: [
-          ...state.items.slice(0, action.index),
-          ...state.items.slice(action.index + 1)
-        ]
-      }
-    }
-
     case EDIT_EXERCISE_SESSION:
       let updatedSessions = Object.assign([], state.currentSessions);
-      let index = _.findIndex(updatedSessions, {exerciseId: action.session.exerciseId});
+      let index = _.findIndex(updatedSessions, {_exerciseId: action.session._exerciseId});
       updatedSessions[index] = action.session;
 
       return {
@@ -160,42 +169,42 @@ export function removeExerciseSession(session) {
   };
 }
 
-export function createNewWorkout(workoutData) {
-  return (dispatch) => {
-    createWorkout(workoutData)
-      .then((response) => response.json())
-      .then((response) => {
-        dispatch(fetchWorkouts());
-        dispatch(loadExercisesByUser());
+//export function createNewWorkout(workoutData) {
+//  return (dispatch) => {
+//    createWorkout(workoutData)
+//      .then((response) => response.json())
+//      .then((response) => {
+//        dispatch(fetchWorkouts());
+//        dispatch(loadExercisesByUser());
+//
+//        dispatch({
+//          type: WORKOUT_CREATED
+//        });
+//
+//        success('Workout created');
+//      })
+//      .catch((err) => errorMessage(err))
+//  }
+//}
 
-        dispatch({
-          type: WORKOUT_CREATED
-        });
-
-        success('Workout created');
-      })
-      .catch((err) => errorMessage(err))
-  }
-}
-
-export function deleteWorkout(workoutId) {
-  return (dispatch, getState) => {
-    const { workouts } = getState();
-
-    removeWorkout(workoutId)
-      .then(() => {
-        success('Workout removed');
-        dispatch({
-          type: DELETE_WORKOUT,
-          index: _.findIndex(workouts.items, {_id: workoutId})
-        });
-
-        dispatch(fetchWorkouts());
-        dispatch(loadExercisesByUser());
-      })
-      .catch(() => errorMessage('Workout could not be deleted'));
-  }
-}
+//export function deleteWorkout(workoutId) {
+//  return (dispatch, getState) => {
+//    const { workouts } = getState();
+//
+//    removeWorkout(workoutId)
+//      .then(() => {
+//        success('Workout removed');
+//        dispatch({
+//          type: DELETE_WORKOUT,
+//          index: _.findIndex(workouts.items, {_id: workoutId})
+//        });
+//
+//        dispatch(fetchWorkouts());
+//        dispatch(loadExercisesByUser());
+//      })
+//      .catch(() => errorMessage('Workout could not be deleted'));
+//  }
+//}
 
 export function editExerciseSession(session) {
   return {

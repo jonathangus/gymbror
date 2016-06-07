@@ -1,9 +1,38 @@
 const HOST = __DEV__ ? 'http://localhost:8080': 'http://seedsites.net:9096';
-//const HOST = 'http://10.0.1.164:8080';
-// const HOST = 'http://192.168.20.184:8080';
-//const HOST = 'http://seedsites.net:9096';
 const API_PATH = HOST + '/api/v1/';
 
+/**
+ * Returns fetch object.
+ * @param url
+ * @param method
+ * @param body
+ * @returns {promise}
+ */
+export const apiCall = (url, method = 'GET', body) => {
+  const postData = {
+    method: method,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Origin': '',
+      'Host': 'http://localhost:8080',
+      'timeout': 15000
+    }
+  }
+
+  if(body) {
+    postData.body = JSON.stringify(body);
+  }
+
+  return fetch(API_PATH + url, postData);
+}
+
+/**
+ * Load exercises by userId.
+ * @param userId
+ * @returns {*}
+ */
+export const loadExercises = userId => apiCall(`exercises/${userId}`);
 
 /**
  * Workouts
@@ -52,14 +81,7 @@ export function removeExercise(id) {
   return fetch(API_PATH + 'delete_exercise/' + id, postData);
 }
 
-export function loadExercises(userId) {
-  const postData = {
-    'method': 'GET',
-    'Content-Type': 'application/json',
-    'timeout': 15000
-  };
-  return fetch(API_PATH + 'exercises/' + userId, postData);
-}
+
 
 export function newExercise(exerciseName,exerciseType, userId) {
   const postData = {

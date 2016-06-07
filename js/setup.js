@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import App from './components/App/App.js';

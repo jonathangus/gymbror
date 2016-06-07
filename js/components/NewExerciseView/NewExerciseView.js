@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { createExercise } from '../../actions/exercises';
+import { createExercise } from '../../actions/exerciseActions';
 import { MessageBarManager } from 'react-native-message-bar';
 import NavigationBar from 'react-native-navbar';
 import Back from '../Back/Back';
@@ -35,8 +35,6 @@ class NewExerciseView extends Component {
   _saveExercise() {
     const { name, types, selectedIndex } = this.state;
     const match = this.props.exercises.exercisesFromUser.filter((exer) => name.toLowerCase() == exer.name.toLowerCase());
-    this.props.dispatch(createExercise(name, types[selectedIndex].toLowerCase()));
-    return;
     if(match.length > 0) {
       AlertIOS.alert(
         'Hey!',
@@ -125,7 +123,6 @@ export default connect(
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    //margin: 10,
     backgroundColor: G.grey
   },
   suggestionItem: {

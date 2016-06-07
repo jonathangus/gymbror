@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import WorkoutList from '../WorkoutList/WorkoutList';
 import styles from './styles';
 import NavigationBar from 'react-native-navbar';
-import { removeExerciseSession, createNewWorkout, setWorkoutDate } from '../../reducers/workouts';
+import { removeExerciseSession, setWorkoutDate } from '../../reducers/workouts';
 import Back from '../Back/Back';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
@@ -10,6 +10,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import ExerciseSelect from '../ExerciseSelect/ExerciseSelect';
 import React, { Component } from 'react';
+import { createWorkout } from '../../actions/workoutActions';
 
 import {
   Text,
@@ -58,7 +59,7 @@ class AddWorkout extends Component {
         userId: user.data.userId,
         date: this.state.date
       };
-      dispatch(createNewWorkout(workoutData));
+      dispatch(createWorkout(workoutData));
       navigator.push({});
     }
   }
@@ -114,7 +115,7 @@ class AddWorkout extends Component {
   render() {
     const exitIcon = <Back onPress={() => this.props.navigator.push({})} />
     const { workouts, exercises } = this.props;
-    const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'exerciseId': ex._id}));
+    const trimmedExercises = exercises.exercisesFromUser.filter(ex => !_.find(workouts.currentSessions, {'_exerciseId': ex._brorId}));
 
     const datepicker = <View style={styles.picker}>
       <View style={styles.pickerTop}>
@@ -154,7 +155,7 @@ class AddWorkout extends Component {
                 style={[styles.row, styles.itemRow]}
                 onPress={this.goToExerciseSession.bind(this, session)}>
                 <View style={styles.innerRow}>
-                  <Text style={styles.rowText}key={i}>{session.name}</Text>
+                  <Text style={styles.rowText}key={i}>{session.exerciseName}</Text>
                   <Icon.Button
                     name="minus"
                     size={27}

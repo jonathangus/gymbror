@@ -1,14 +1,13 @@
 import Video from 'react-native-video';
-import FBLogin from 'react-native-facebook-login';
-import { FBLoginManager } from 'NativeModules';
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import { connect } from 'react-redux';
 import styles from './styles';
 import { setUser, logoutUser } from '../../reducers/user';
 import React, { Component } from 'react';
 
-const {
-  View,
-} = React;
+import {
+  View
+} from 'react-native';
 
 class Auth extends Component {
   constructor(props) {
@@ -16,7 +15,6 @@ class Auth extends Component {
   }
 
   onLogin(data) {
-    console.log(data);
     const { dispatch } = this.props;
     dispatch(setUser(data.credentials));
   }

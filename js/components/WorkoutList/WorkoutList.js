@@ -62,8 +62,7 @@ class WorkoutList extends Component {
 
   render() {
     const { workouts } = this.props;
-    const groupedWorkouts = this.sortWorkouts(workouts.items);
-    var _scrollView: ScrollView;
+    const groupedWorkouts = this.sortWorkouts(workouts.items)
     return (
       <View style={styles.container}>
         <NavigationBar
@@ -73,7 +72,6 @@ class WorkoutList extends Component {
         {groupedWorkouts.length == 0 ?
           <Button onPress={() => {this.props.navigator.push({addWorkout: 1})}}>You dont have any exercises, create one?</Button>: null}
         <ScrollView
-          ref={(scrollView) => { _scrollView = scrollView; }}
           scrollEventThrottle={200}
           refreshControl={
             <RefreshControl

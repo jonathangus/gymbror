@@ -32,6 +32,7 @@
 		AB6472281D05F7640055B8ED /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB6472201D05F7640055B8ED /* MaterialIcons.ttf */; };
 		AB6472291D05F7640055B8ED /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB6472211D05F7640055B8ED /* Octicons.ttf */; };
 		AB64722A1D05F7640055B8ED /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB6472221D05F7640055B8ED /* Zocial.ttf */; };
+		AB64723C1D0609B20055B8ED /* background.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AB64723B1D06093F0055B8ED /* background.mp4 */; };
 		AB9CEDA71D05794A00565FA6 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9CEDA01D05791700565FA6 /* libCodePush.a */; };
 		AB9CEDB91D05E9BA00565FA6 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9CEDB61D05E9BA00565FA6 /* FBSDKCoreKit.framework */; };
 		AB9CEDBA1D05E9BA00565FA6 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9CEDB71D05E9BA00565FA6 /* FBSDKLoginKit.framework */; };
@@ -199,6 +200,7 @@
 		AB6472201D05F7640055B8ED /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		AB6472211D05F7640055B8ED /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		AB6472221D05F7640055B8ED /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		AB64723B1D06093F0055B8ED /* background.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = background.mp4; path = ../background.mp4; sourceTree = "<group>"; };
 		AB9CED9B1D05791600565FA6 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		AB9CEDA11D05793500565FA6 /* RCTFBLogin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTFBLogin.xcodeproj; path = "../node_modules/react-native-facebook-login/RCTFBLogin.xcodeproj"; sourceTree = "<group>"; };
 		AB9CEDB61D05E9BA00565FA6 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 		13B07FAE1A68108700A75B9A /* Gymbror */ = {
 			isa = PBXGroup;
 			children = (
+				AB64723B1D06093F0055B8ED /* background.mp4 */,
 				AB9CEDB61D05E9BA00565FA6 /* FBSDKCoreKit.framework */,
 				AB9CEDB71D05E9BA00565FA6 /* FBSDKLoginKit.framework */,
 				AB9CEDB81D05E9BA00565FA6 /* FBSDKShareKit.framework */,
@@ -736,6 +739,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB64723C1D0609B20055B8ED /* background.mp4 in Resources */,
 				AB6472281D05F7640055B8ED /* MaterialIcons.ttf in Resources */,
 				AB6472291D05F7640055B8ED /* Octicons.ttf in Resources */,
 				AB64722A1D05F7640055B8ED /* Zocial.ttf in Resources */,
