@@ -7,7 +7,7 @@ import Reps from '../Reps/Reps';
 import { addExerciseSession, editExerciseSession } from '../../actions/workoutActions';
 import Back from '../Back/Back';
 import React, { Component } from 'react';
-import { uuid } from '../../util';
+import { uuid, mapSessions } from '../../util';
 
 import {
   Text,
@@ -27,7 +27,7 @@ const defaultValues = [
 class EditExerciseSession extends Component {
   constructor(props) {
     super(props);
-    const { selectedExercise, selectedSession } = this.props;
+    const { selectedExercise, selectedSession, sessions } = this.props;
     this.state = {
       selectedExercise: null,
       selectorOpen: true,
@@ -35,14 +35,17 @@ class EditExerciseSession extends Component {
       exerciseName: selectedExercise ? selectedExercise.exerciseName : selectedSession.exerciseName,
       newInstance: selectedExercise ? true : false
     }
+
+    const mappedSessions = selectedExercise ? mapSessions(sessions, '_exerciseId', selectedExercise._brorId) : null;
+
     if(selectedSession && selectedSession.sets) {
       this.state.rows = selectedSession.sets;
     }
-    else if(!selectedExercise || selectedExercise.sessions.length == 0) {
+    else if(!selectedExercise || mappedSessions.length == 0) {
       this.state.rows = defaultValues;
     }
     else if(selectedExercise) {
-      this.state.rows = selectedExercise.sessions[0].sets;
+      this.state.rows = mappedSessions[0].sets;
     }
   }
 
@@ -101,7 +104,8 @@ export default connect(
   (state) => ({
     user: state.user,
     exercises: state.exercises,
-    workouts: state.workouts
+    workouts: state.workouts,
+    sessions: state.sessions
   }),
   { addExerciseSession, editExerciseSession}
 )(EditExerciseSession);

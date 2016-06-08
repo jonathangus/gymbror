@@ -14,7 +14,7 @@ import {
   UPDATE_SESSION_IN_WORKOUT
 } from '../actions/actionTypes';
 
-const initialState = {
+const intialState = {
   items: [],
   isFetching: false,
   currentSessions: [],
@@ -22,9 +22,10 @@ const initialState = {
   localItems: []
 };
 
-export default (state = initialState, action) => {
+export default (state = intialState, action) => {
   switch(action.type) {
     case ADD_WORKOUT:
+      successMessage('Workout added');
       return {
         ...state,
         items: [...state.items, action.newWorkout],
@@ -33,6 +34,7 @@ export default (state = initialState, action) => {
       }
 
     case DELETE_WORKOUT:
+      successMessage('Workout removed');
       var index = _.findIndex(state.items, {_brorId: action.workoutData._brorId});
       return {
         ...state,

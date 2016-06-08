@@ -42,6 +42,13 @@ export const loadExercises = userId => apiCall(`exercises/${userId}`);
 export const loadWorkouts = userId => apiCall(`workouts/${userId}`);
 
 /**
+ * Load workouts by userId.
+ * @param userId
+ * @returns {*}
+ */
+export const loadSessions = userId => apiCall(`all_sessions/${userId}`);
+
+/**
  * Test the server.
  * @returns {*}
  */

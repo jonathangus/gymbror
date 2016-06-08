@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import G from '../../global';
 import Icon from 'react-native-vector-icons/Entypo';
 import React, { Component } from 'react';
+import { mapSessions } from '../../util';
 
 import {
   Text,
@@ -54,14 +55,32 @@ class WorkoutInformation extends Component {
       workoutData: React.PropTypes.object.isRequired
     }
 
+    constructor(props) {
+      super(props);
+
+      const { exercises, sessions, workoutData: { _brorId } } = this.props;
+
+      let newSessions = mapSessions(sessions, '_workoutId', _brorId);
+      newSessions.forEach((s) => {
+        const match = exercises.exercisesFromUser.filter(ex => ex._brorId == s._exerciseId);
+        s.exerciseName = match[0].exerciseName || 'MISSING NAME';
+      });
+
+      console.log(newSessions)
+
+      this.state = {
+        sessions: newSessions
+      }
+    }
+
     removeWorkout() {
       AlertIOS.alert(
         'Remove workout',
         'Do you really wanna remove this workout?',
         [{
           text: 'Remove', onPress: () => {
-            const { dispatch, workoutData, navigator } = this.props;
-            dispatch(deleteWorkout(workoutData));
+            const { navigator, workoutData, deleteWorkout } = this.props;
+            deleteWorkout(workoutData);
             navigator.push({workoutList: 1});
           }
         },
@@ -71,8 +90,9 @@ class WorkoutInformation extends Component {
     }
 
     render() {
-      const { workoutData: { sessions } } = this.props;
-      console.log(this.props);
+      const { workoutData } = this.props;
+      const { sessions } = this.state;
+
       return (
         <View style={styles.container}>
           <NavigationBar
@@ -121,6 +141,9 @@ class WorkoutInformation extends Component {
 
 export default connect(
   (state) => ({
-    workouts: state.workouts
-  })
+    exercises: state.exercises,
+    workouts: state.workouts,
+    sessions: state.sessions
+  }),
+  { deleteWorkout }
 )(WorkoutInformation);

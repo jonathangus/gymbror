@@ -15,7 +15,7 @@ export const logoutUser = data => ({
   data: data
 });
 
-export default (state = initialState, action = {}) => {
+export default (state = intialState, action = {}) => {
   switch (action.type) {
     case SET_USER:
       return {

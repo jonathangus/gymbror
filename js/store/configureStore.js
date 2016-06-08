@@ -21,10 +21,10 @@ const createGymbrorStore = applyMiddleware(thunk, sync, logger)(createStore);
 export default (cb) => {
   const store = autoRehydrate()(createGymbrorStore)(reducers);
   //console.log(AsyncStorage.getAllKeys().done((data) => console.log(data)));
-  //AsyncStorage.removeItem('reduxPersist:workouts')
-  //AsyncStorage.removeItem('reduxPersist:sessions')
-  //AsyncStorage.removeItem('reduxPersist:exercises')
-  //AsyncStorage.removeItem('reduxPersist:offline')
+  // AsyncStorage.removeItem('reduxPersist:workouts')
+  // AsyncStorage.removeItem('reduxPersist:sessions')
+  // AsyncStorage.removeItem('reduxPersist:exercises')
+  // AsyncStorage.removeItem('reduxPersist:offline')
   persistStore(store, {storage: AsyncStorage}, cb);
   if (isDebuggingInChrome) {
     window.store = store;

@@ -1,11 +1,13 @@
 import { syncItems } from '../actions/syncActions';
 import _ from 'lodash';
+import {
+  OFFLINE_SYNC_REMOVE,
+  OFFLINE_SYNC_ADD,
+  SET_CONNECTION
+} from '../actions/actionTypes';
 
 // Action key that carries API call info interpreted by this Redux middleware.
 export const SYNC = Symbol('Sync')
-export const OFFLINE_SYNC_ADD = 'OFFLINE_SYNC_ADD';
-export const SET_CONNECTION = 'SET_CONNECTION';
-export const OFFLINE_SYNC_REMOVE = 'OFFLINE_SYNC_REMOVE';
 
 export default store => next => action => {
   // If the connection is changed to active start syncing.
@@ -42,6 +44,6 @@ export default store => next => action => {
       dispatch(syncItems());
     }
   }
-  
+
   next(action);
 }

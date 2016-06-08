@@ -3,6 +3,7 @@ import NavigationBar from 'react-native-navbar';
 import G from '../../global';
 import moment from 'moment';
 import Button from '../Button/Button';
+import { mapSessions } from '../../util';
 //import RNChart from 'react-native-chart';
 import React, { Component } from 'react';
 
@@ -43,10 +44,10 @@ class ExerciseInformation extends Component {
   static propTypes = {
     exerciseData: React.PropTypes.object.isRequired
   }
-  
+
   constructor(props) {
     super(props);
-    
+
     this.state = {
       graphData: this.getGraphData(),
       sessions: this.getSessions()
@@ -54,13 +55,13 @@ class ExerciseInformation extends Component {
   }
 
   getSessions() {
-    const { sessions, exerciseData } = this.props;
-    return sessions.filter(s => s._exerciseId === exerciseData._brorId);
+    const { sessions, exerciseData: { _brorId } } = this.props;
+    return mapSessions(sessions, '_exerciseId', _brorId);
   }
 
   getGraphData() {
     const { exerciseData } = this.props;
-    
+
     let graphData = [];
     exerciseData.sessions.forEach((sess) => {
       let graphItem = {};
@@ -85,7 +86,7 @@ class ExerciseInformation extends Component {
       graphItem.maxValue = maxValue;
       graphData.push(graphItem);
     });
-    
+
     return graphData;
   }
 
@@ -113,9 +114,8 @@ class ExerciseInformation extends Component {
 
   render() {
     const graph = this.generateGraph();
-    const { exerciseData } = this.props;
+    const { exerciseData: { exerciseName } } = this.props;
     const { sessions } = this.state;
-    console.log(this.state);
     //<RNChart style={styles.chart}
     //         chartData={graph.exerciseData}
     //         verticalGridStep={5}
@@ -123,7 +123,7 @@ class ExerciseInformation extends Component {
     return (
       <View style={styles.container}>
         <NavigationBar
-          title={{ title: exerciseData.name }}
+          title={{ title: exerciseName }}
           leftButton={this.leftButtonConfig()} />
 
         <ScrollView

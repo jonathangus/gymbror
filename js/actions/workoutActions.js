@@ -23,6 +23,11 @@ export const createWorkout = workoutData => dispatch => {
   workoutData._brorId = uuid();
 
   // Pick out the sessions and put in a seprate state.
+  workoutData.sessions.forEach(s => {
+    s._workoutId = workoutData._brorId;
+    s.date = workoutData.date;
+  });
+
   dispatch({
     type: ADD_SESSIONS,
     sessions: workoutData.sessions,
@@ -30,7 +35,7 @@ export const createWorkout = workoutData => dispatch => {
 
   // We want to pass sessions in the workout object to the server but not store it.
   const trimmedWorkoutData = Object.assign({}, workoutData);
-  delete workoutData.sessions;
+  delete trimmedWorkoutData.sessions;
 
   // Add workout to our state and add sync object to the queue.
   dispatch({
@@ -49,7 +54,7 @@ export const createWorkout = workoutData => dispatch => {
  * Delete workout.
  * @param workoutData
  */
-export const deleteWorkout = workoutData => dispatch => {
+export const deleteWorkout = workoutData => (dispatch, getState) => {
   // Delete this workout and add a sync object to the queque.
   dispatch({
     type: DELETE_WORKOUT,
@@ -62,10 +67,12 @@ export const deleteWorkout = workoutData => dispatch => {
     }
   });
 
+  const { sessions } = getState();
+
   // Delete the sessions for this workout.
   dispatch({
     type: DELETE_SESSIONS,
-    sessions: workoutData.sessions
+    sessions: sessions.filter(s => s._workoutId == workoutData._brorId)
   });
 };
 
@@ -94,31 +101,33 @@ export const editExerciseSession = (session) => ({
 });
 
 /**
-  * Change the date for the new workout.
-  */
- export const setWorkoutDate = (date) => ({
-   type: SET_WORKOUT_DATE,
-   date: date
- });
+ * Change the date for the new workout.
+ */
+export const setWorkoutDate = (date) => ({
+ type: SET_WORKOUT_DATE,
+ date: date
+});
 
  /**
-   * Change the date for the new workout.
-   */
-  export const refreshWorkouts = (date) => (dispatch, getState) => {
-    const { user: { data: { userId } } } = getState();
+  * Change the date for the new workout.
+  */
+export const refreshWorkouts = (date) => (dispatch, getState) => {
+  const { connection, offline, user: { data: { userId } } } = getState();
 
-    dispatch({
-      type: REQUEST_WORKOUTS
-    });
+  if(!connection || offline.length > 0) return;
 
-    loadWorkouts(userId)
-      .then((response) => response.json())
-      .then((response) => {
-        dispatch({
-          type: RECIVED_WORKOUTS,
-          workouts: response
-        });
-      })
-      .catch(() => dispatch({type: REQUEST_WORKOUTS_ABANDON}))
+  dispatch({
+    type: REQUEST_WORKOUTS
+  });
 
-  }
+  loadWorkouts(userId)
+    .then((response) => response.json())
+    .then((response) => {
+      dispatch({
+        type: RECIVED_WORKOUTS,
+        workouts: response
+      });
+    })
+    .catch(() => dispatch({type: REQUEST_WORKOUTS_ABANDON}))
+
+}

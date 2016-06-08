@@ -1,8 +1,10 @@
-import { apiCall, loadExercises, loadWorkouts } from '../api';
+import { apiCall, loadExercises, loadWorkouts, loadSessions} from '../api';
 import {
   SET_EXERCISES_FROM_USER,
   OFFLINE_SYNC_REMOVE,
-  RECIVED_WORKOUTS
+  RECIVED_WORKOUTS,
+  SET_CONNECTION,
+  SET_SESSIONS_FROM_USER
 } from './actionTypes';
 
 /**
@@ -44,17 +46,19 @@ export const syncItems = () => (dispatch, getState) => {
  * Load data for our three entities.
  */
 export const syncDataFromServer = () => (dispatch, getState) => {
-  const { offline, user: { data: { userId } } } = getState();
+  const { connection, offline, user: { data: { userId } } } = getState();
 
   // Don't load data from the server if we still got items queued.
-  if(offline.length > 0) return;
+  if(!offline || offline.length > 0) return;
+
+  // TODO: Make one call for these.
 
   loadExercises(userId)
     .then((response) => response.json())
     .then((response) => {
       dispatch({
         type: SET_EXERCISES_FROM_USER,
-        workouts: response
+        exercises: response
       });
     });
 
@@ -66,4 +70,22 @@ export const syncDataFromServer = () => (dispatch, getState) => {
         workouts: response
       });
     });
+
+    // TODO Map sessions to exercises and workouts direct.
+    loadSessions(userId)
+      .then((response) => response.json())
+      .then((response) => {
+        dispatch({
+          type: SET_SESSIONS_FROM_USER,
+          sessions: response
+        });
+      });
 }
+
+/**
+ * Set the state of our users internet connection.
+ */
+export const setConnection = (isConnected = false) => ({
+  type: SET_CONNECTION,
+  isConnected: isConnected
+});
