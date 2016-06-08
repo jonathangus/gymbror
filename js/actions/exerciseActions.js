@@ -17,7 +17,7 @@ export const createExercise = (exerciseName, exerciseType) => (dispatch, getStat
   const { user } = getState();
 
   const newExercise = {
-    name: exerciseName,
+    exerciseName: exerciseName,
     type: exerciseType,
     userId: user.data.userId,
     _brorId: generate(),

@@ -26,7 +26,7 @@ export default class ExerciseSelect extends Component {
             style={[G.basicRow, G.thinRow]}
             onPress={onSelect.bind(this, ex)}>
             <View>
-              <Text>{ex.name}</Text>
+              <Text>{ex.exerciseName}</Text>
             </View>
           </TouchableHighlight>
         )}

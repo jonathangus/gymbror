@@ -107,7 +107,7 @@ class ExerciseList extends Component {
           onPress={this._goToExercise.bind(this, rowData)}
           style={[G.basicRow, styles.row]}
           underlayColor={G.grey}>
-          <Text style={styles.rowText}>{rowData.name}</Text>
+          <Text style={styles.rowText}>{rowData.exerciseName}</Text>
         </TouchableHighlight>
       </Swipeout>
     )

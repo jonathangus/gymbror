@@ -7,7 +7,6 @@ import createLogger from 'redux-logger';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
 import sync from '../middleware/sync';
-import api from '../middleware/api';
 
 const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
 
@@ -17,10 +16,9 @@ const logger = createLogger({
   duration: true,
 });
 
-
 const createGymbrorStore = applyMiddleware(thunk, sync, logger)(createStore);
 
-export default function configureStore(cb) {
+export default (cb) => {
   const store = autoRehydrate()(createGymbrorStore)(reducers);
   //console.log(AsyncStorage.getAllKeys().done((data) => console.log(data)));
   //AsyncStorage.removeItem('reduxPersist:workouts')

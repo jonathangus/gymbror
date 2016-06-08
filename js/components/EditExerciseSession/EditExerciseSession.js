@@ -56,14 +56,15 @@ class EditExerciseSession extends Component {
 
   onSessionAdded(sets) {
     const { dispatch, user, navigator, selectedExercise } = this.props;
+    const { selectedType, exerciseName } = this.state;
     const exerciseId = selectedExercise._brorId;
     navigator.push({addWorkout: 1});
     const newSession = {
       sets: sets,
       _exerciseId: exerciseId,
       userId: user.data.userId,
-      exerciseName: selectedExercise.name,
-      type: selectedExercise.type,
+      exerciseName: exerciseName,
+      type: selectedType,
       _brorId: generate()
     }
     dispatch(addExerciseSession(newSession));

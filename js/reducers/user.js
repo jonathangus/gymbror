@@ -1,10 +1,10 @@
-const SET_USER = 'SET_USER';
-const LOGOUT_USER = 'LOGOUT_USER';
+import { SET_USER , LOGOUT_USER } from '../actions/actionTypes';
 
 const intialState = {
   data: null,
   isLoggedIn: false
 }
+
 
 export function setUser(data) {
   return (dispatch) => {

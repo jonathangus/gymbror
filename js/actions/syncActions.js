@@ -6,18 +6,19 @@ const removeOfflineItem = (index = 0) => ({
   index: index
 });
 
+
 export const syncItems = () => (dispatch, getState) => {
-  const { offline } = getState();
+  const { offline, connection } = getState();
   // Return if there is not items
-  if(offline.length == 0) return;
+  if(!connection || offline.length == 0) return;
 
   (async () => {
     let promises = [];
 
     // Create a promise for each offline item.
     for(var key in offline) {
-      var s = offline[key];
-      promises.push(await (await apiCall(s.path, s.method, s.body)).json());
+      var item = offline[key];
+      promises.push(await (await apiCall(item.path, item.method, item.body)).json());
     }
 
     // When the request have been done dispatch a action that remove each item.
@@ -27,5 +28,20 @@ export const syncItems = () => (dispatch, getState) => {
       });
     });
   })()
-
 }
+
+// export const syncDataFromServer = () => (dispatch, getState) => {
+//   const { connection } = getState();
+//   // Return if there is not items
+//   if(connection) return;
+//
+//   (async () => {
+//
+//     // When the request have been done dispatch a action that remove each item.
+//     Promise.all(promises).then((responses) => {
+//       responses.forEach((response, key) => {
+//         if(response.success) dispatch(removeOfflineItem(key));
+//       });
+//     });
+//   })()
+// }

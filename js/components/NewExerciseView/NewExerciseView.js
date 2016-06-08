@@ -25,7 +25,7 @@ class NewExerciseView extends Component {
     const suggestions = this.props.exercises.suggestedExercises;
 
     this.state = {
-      name: '',
+      exerciseName: '',
       suggestions: suggestions,
       types: ['Weight', 'Reps', 'Time'],
       selectedIndex: 0
@@ -33,12 +33,13 @@ class NewExerciseView extends Component {
   }
 
   _saveExercise() {
-    const { name, types, selectedIndex } = this.state;
-    const match = this.props.exercises.exercisesFromUser.filter((exer) => name.toLowerCase() == exer.name.toLowerCase());
+    const { exerciseName, types, selectedIndex } = this.state;
+    const { exercises } = this.props;
+    const match = exercises.exercisesFromUser.filter((exer) => exerciseName.toLowerCase() == exer.exerciseName.toLowerCase());
     if(match.length > 0) {
       AlertIOS.alert(
         'Hey!',
-        'You have already added a exercise with this name',
+        'You have already added a exercise with this exerciseName',
         [{
           text: 'Okidoki'
         }]
@@ -46,20 +47,20 @@ class NewExerciseView extends Component {
 
       return;
     }
-    if(name.length > 0) {
+    if(exerciseName.length > 0) {
       const { dispatch } = this.props;
-      dispatch(createExercise(name, types[selectedIndex].toLowerCase()));
+      dispatch(createExercise(exerciseName, types[selectedIndex].toLowerCase()));
       this.props.navigator.push({exerciseList: 1});
     }
   }
 
-  onChange(name) {
+  onChange(exerciseName) {
     const { exercises } = this.props;
     const suggestions = exercises.suggestedExercises.filter((exer) => {
-      return exer.toLowerCase().indexOf(name.toLowerCase()) > -1 && exer.toLowerCase() !== name.toLowerCase();
+      return exer.toLowerCase().indexOf(exerciseName.toLowerCase()) > -1 && exer.toLowerCase() !== exerciseName.toLowerCase();
     });
     this.setState({
-      name: name,
+      exerciseName: exerciseName,
       suggestions: suggestions
     });
   }
@@ -86,7 +87,7 @@ class NewExerciseView extends Component {
           </View>
           <TextInput
             style={styles.inputStyle}
-            value={this.state.name}
+            value={this.state.exerciseName}
             onChangeText={(text) => this.onChange(text)}
            />
         </View>
@@ -107,7 +108,7 @@ class NewExerciseView extends Component {
         />
 
         <View style={[G.section, styles.save]}>
-          {this.state.name.length > 0 ? <Button onPress={this._saveExercise.bind(this)}>Save</Button> : null}
+          {this.state.exerciseName.length > 0 ? <Button onPress={this._saveExercise.bind(this)}>Save</Button> : null}
         </View>
       </View>
     );
