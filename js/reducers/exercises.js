@@ -4,7 +4,7 @@ import {
   NEW_EXERCISE,
   DELETE_EXERCISE,
   SET_EXERCISES_FROM_USER
-} from '../actions/exerciseActions';
+} from '../actions/actionTypes';
 
 const initialState = {
   exercisesFromUser: [],
@@ -15,7 +15,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
-  
+
     case NEW_EXERCISE:
       successMessage('Exercise added');
       return {

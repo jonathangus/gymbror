@@ -5,25 +5,17 @@ const intialState = {
   isLoggedIn: false
 }
 
+export const setUser = data => ({
+  type: SET_USER,
+  data: data
+});
 
-export function setUser(data) {
-  return (dispatch) => {
-    return dispatch({
-      type: SET_USER,
-      data: data
-    });
-  }
-}
+export const logoutUser = data => ({
+  type: LOGOUT_USER,
+  data: data
+});
 
-export function logoutUser() {
-  return (dispatch) => {
-    return dispatch({
-      type: LOGOUT_USER,
-    })
-  }
-}
-
-export default function user(state = intialState, action = {}) {
+export default (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_USER:
       return {

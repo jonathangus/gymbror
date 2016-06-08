@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import WorkoutList from '../WorkoutList/WorkoutList';
 import styles from './styles';
 import NavigationBar from 'react-native-navbar';
-import { removeExerciseSession, setWorkoutDate } from '../../reducers/workouts';
 import Back from '../Back/Back';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import G from '../../global';
@@ -10,7 +9,11 @@ import moment from 'moment';
 import _ from 'lodash';
 import ExerciseSelect from '../ExerciseSelect/ExerciseSelect';
 import React, { Component } from 'react';
-import { createWorkout } from '../../actions/workoutActions';
+import {
+  createWorkout ,
+  removeExerciseSession,
+  setWorkoutDate
+} from '../../actions/workoutActions';
 
 import {
   Text,
@@ -37,13 +40,14 @@ class AddWorkout extends Component {
       selectedExercise: null
     }
   }
+
   removeSession(session) {
-    const { dispatch } = this.props;
-    dispatch(removeExerciseSession(session));
+    const { removeExerciseSession } = this.props;
+    removeExerciseSession(session);
   }
 
   submitWorkout() {
-    const { workouts, user, dispatch, navigator } = this.props;
+    const { workouts, user, navigator, createWorkout } = this.props;
     if(workouts.currentSessions.length == 0) {
       AlertIOS.alert(
         'Hey!',
@@ -59,13 +63,13 @@ class AddWorkout extends Component {
         userId: user.data.userId,
         date: this.state.date
       };
-      dispatch(createWorkout(workoutData));
+      createWorkout(workoutData);
       navigator.push({});
     }
   }
 
   onDateChange(date) {
-    this.props.dispatch(setWorkoutDate(date));
+    this.props.setWorkoutDate(date);
     this.setState({date: date});
   }
 
@@ -130,7 +134,6 @@ class AddWorkout extends Component {
         timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
         onDateChange={this.onDateChange.bind(this)} />
     </View>;
-
     return (
       <View style={styles.container}>
         <NavigationBar
@@ -220,10 +223,16 @@ class AddWorkout extends Component {
   }
 }
 
+
 export default connect(
   (state) => ({
     user: state.user,
     exercises: state.exercises,
     workouts: state.workouts
-  })
+  }),
+  {
+    removeExerciseSession,
+    createWorkout,
+    setWorkoutDate
+  }
 )(AddWorkout);

@@ -1,11 +1,13 @@
 import { SYNC } from '../middleware/sync';
-import { generate } from 'shortid';
+import { uuid } from '../util';
 import { loadExercises } from '../api';
 import _ from 'lodash';
 
-export const DELETE_EXERCISE = 'DELETE_EXERCISE'
-export const NEW_EXERCISE = 'NEW_EXERCISE';
-export const SET_EXERCISES_FROM_USER = 'SET_EXERCISES_FROM_USER';
+import {
+  DELETE_EXERCISE,
+  NEW_EXERCISE,
+  SET_EXERCISES_FROM_USER,
+} from './actionTypes';
 
 /**
  * Create new exercise.
@@ -20,7 +22,7 @@ export const createExercise = (exerciseName, exerciseType) => (dispatch, getStat
     exerciseName: exerciseName,
     type: exerciseType,
     userId: user.data.userId,
-    _brorId: generate(),
+    _brorId: uuid(),
     sessions: [],
   };
 

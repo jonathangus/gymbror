@@ -4,13 +4,11 @@ import BrorNavigator from '../BrorNavigator/BrorNavigator';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 import { FBLoginManager } from 'NativeModules';
 import { MessageBar, MessageBarManager } from 'react-native-message-bar';
-import { errorMessage, success } from '../../error_handling';
 import AppState from 'AppState';
-import { fetchWorkoutsIfNeeded } from '../../reducers/workouts';
 import CodePush from 'react-native-code-push';
 import React, { Component } from 'react';
 import NetConnection from '../NetConnection/NetConnection';
-import { loadExercisesByUser } from '../../actions/exerciseActions';
+import { syncDataFromServer } from '../../actions/syncActions';
 
 import {
   View,
@@ -23,24 +21,14 @@ class App extends Component {
 
     // Sync our code
     CodePush.sync({ installMode: CodePush.InstallMode.IMMEDIATE});
-    CodePush.checkForUpdate()
-    .then((update) => {
-      if (update) {
-        success("An update is available!");
-      }
-    });
 
-    const { dispatch, user } = this.props;
 
-    // Load exercises
+    const { user, syncDataFromServer } = this.props;
+
+    // Sync data for logged in users.
     if(user.isLoggedIn) {
-      dispatch(loadExercisesByUser());
-      //dispatch(fetchWorkoutsIfNeeded());
+      syncDataFromServer();
     }
-
-    //// Test server
-    //testServer()
-    //  .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
 
     // Each time the user is logged in lets update its exercise list
     RCTDeviceEventEmitter.addListener(
@@ -59,15 +47,12 @@ class App extends Component {
   handleAppStateChange(appState) {
     if (appState === 'active') {
       CodePush.sync({installMode: CodePush.InstallMode.IMMEDIATE});
-      const { dispatch } = this.props;
-      dispatch(loadExercisesByUser());
-      //testServer()
-      //  .catch(() => errorMessage('Server is down', 'gymbror have gone crossfitting'));
+      const { syncDataFromServer } = this.props;
+      syncDataFromServer();
     }
   }
 
   componentWillUnmount() {
-    // Remove the alert located on this master page from the manager
     MessageBarManager.unregisterMessageBar();
   }
 
@@ -89,5 +74,6 @@ class App extends Component {
 export default connect(
   (state) => ({
     user: state.user
-  })
+  }),
+  { syncDataFromServer }
 )(App);

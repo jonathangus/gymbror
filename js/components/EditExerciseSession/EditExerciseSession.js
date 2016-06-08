@@ -4,10 +4,10 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/Entypo';
 import _ from 'lodash';
 import Reps from '../Reps/Reps';
-import { addExerciseSession, editExerciseSession } from '../../reducers/workouts';
+import { addExerciseSession, editExerciseSession } from '../../actions/workoutActions';
 import Back from '../Back/Back';
 import React, { Component } from 'react';
-import { generate } from 'shortid';
+import { uuid } from '../../util';
 
 import {
   Text,
@@ -47,15 +47,16 @@ class EditExerciseSession extends Component {
   }
 
   onSessionEdit(sets) {
-    const { dispatch, selectedSession } = this.props;
+    const { editExerciseSession, selectedSession } = this.props;
     let updatedSession = Object.assign({}, selectedSession);
     updatedSession.sets = sets;
-    dispatch(editExerciseSession(updatedSession));
+
+    editExerciseSession(updatedSession);
     this.props.navigator.push({addWorkout: 1});
   }
 
   onSessionAdded(sets) {
-    const { dispatch, user, navigator, selectedExercise } = this.props;
+    const { addExerciseSession, user, navigator, selectedExercise } = this.props;
     const { selectedType, exerciseName } = this.state;
     const exerciseId = selectedExercise._brorId;
     navigator.push({addWorkout: 1});
@@ -65,9 +66,9 @@ class EditExerciseSession extends Component {
       userId: user.data.userId,
       exerciseName: exerciseName,
       type: selectedType,
-      _brorId: generate()
+      _brorId: uuid()
     }
-    dispatch(addExerciseSession(newSession));
+    addExerciseSession(newSession);
   }
 
   render() {
@@ -101,5 +102,6 @@ export default connect(
     user: state.user,
     exercises: state.exercises,
     workouts: state.workouts
-  })
+  }),
+  { addExerciseSession, editExerciseSession}
 )(EditExerciseSession);

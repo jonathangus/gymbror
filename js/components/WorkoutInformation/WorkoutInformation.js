@@ -72,6 +72,7 @@ class WorkoutInformation extends Component {
 
     render() {
       const { workoutData: { sessions } } = this.props;
+      console.log(this.props);
       return (
         <View style={styles.container}>
           <NavigationBar
