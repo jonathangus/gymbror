@@ -52,10 +52,11 @@ export const syncDataFromServer = () => (dispatch, getState) => {
   if(!offline || offline.length > 0) return;
 
   // TODO: Make one call for these.
-
+  console.log(userId, 'user')
   loadExercises(userId)
     .then((response) => response.json())
     .then((response) => {
+      console.log(response)
       dispatch({
         type: SET_EXERCISES_FROM_USER,
         exercises: response

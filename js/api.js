@@ -1,4 +1,4 @@
-const HOST = __DEV__ ? 'http://localhost:8080': 'http://seedsites.net:9096';
+const HOST = 'http://82.196.12.250:3000';
 const API_PATH = HOST + '/api/v1/';
 
 /**

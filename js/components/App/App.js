@@ -24,7 +24,7 @@ class App extends Component {
 
 
     const { user, syncDataFromServer } = this.props;
-
+    console.log(user, 'user')
     // Sync data for logged in users.
     if(user.isLoggedIn) {
       syncDataFromServer();
